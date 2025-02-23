@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "intentional-living",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,10 @@
     "@clerk/nextjs": "^6.12.0",
     "@portabletext/react": "^3.2.1",
     "@sanity/client": "^6.28.0",
+    "@sanity/icons": "^3.6.0",
     "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.76.3",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
     "next": "15.1.7",
     "next-sanity": "^9.8.59",
@@ -24,7 +27,10 @@
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-is": "^19.0.0",
-    "svix": "^1.59.1"
+    "sanity": "^3.76.3",
+    "styled-components": "^6.1.15",
+    "svix": "^1.59.1",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
