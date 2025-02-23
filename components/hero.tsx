@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Button } from "./button"
+import Link from "next/link"
 
 const Hero = () => {
   return (
@@ -23,16 +24,18 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}>
-          Track your habits, set meaningful goals, and live with purpose.
+          Getting 0.1% Better Every Day, Together
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}>
-          <Button className="px-6 py-3 text-lg bg-black hover:bg-amber-400/50 transition">
-            Get Started
-          </Button>
+          <Link href={"/quiz"}>
+            <Button className="px-6 py-3 text-lg bg-black hover:bg-amber-400/50 transition">
+              Get Started
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
     </section>

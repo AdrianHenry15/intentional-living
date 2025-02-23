@@ -8,13 +8,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const baseStyles =
-      "px-6 py-3 text-lg font-medium rounded-xl transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      "px-6 py-3 text-lg font-medium rounded-xl transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
 
     const variants = {
-      default: "bg-indigo-500 text-white hover:bg-indigo-600",
+      default: "bg-yellow-400 text-white hover:bg-yellow-400/50",
       outline:
-        "border border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white",
-      ghost: "text-indigo-500 hover:bg-indigo-100",
+        "border border-yellow-500 text-yellow-500 hover:bg-yellow-400 hover:text-white",
+      ghost: "text-yellow-500 hover:bg-yellow-100",
     }
 
     return (

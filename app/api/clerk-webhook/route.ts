@@ -11,7 +11,9 @@ interface ClerkWebhookEvent {
     first_name: string
     last_name: string
     email_addresses: { email_address: string }[]
-    username: string
+    username?: string
+    phone_numbers?: { phone_number: string }[]
+    image_url?: string
   }
 }
 
@@ -41,6 +43,8 @@ export async function POST(req: NextRequest) {
       data.email_addresses?.map(
         (email: { email_address: string }) => email.email_address
       ) ?? []
+    const phone = data.phone_numbers?.[0]?.phone_number || ""
+    const profileImageUrl = data.image_url || ""
 
     if (type === "user.created") {
       // Add user to Sanity
@@ -51,10 +55,15 @@ export async function POST(req: NextRequest) {
         first_name: data.first_name ?? "",
         last_name: data.last_name ?? "",
         email: emails,
-        username: data.username ?? "",
-        books: [],
-        prompts: [],
-        daily_prompt_count: 0,
+        phone,
+        phone_verified: false, // Default to false, update when verified
+        notification_time: new Date().toISOString(), // Placeholder, update later
+        timezone: "UTC", // Default value, should be updated
+        profile_image_url: profileImageUrl,
+        streak_count: 0,
+        last_streak_date: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       })
 
       // Store the Sanity user ID inside Clerk's metadata
@@ -68,8 +77,10 @@ export async function POST(req: NextRequest) {
         .set({
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",
-          email: data.email_addresses?.[0]?.email_address ?? "",
-          username: data.username ?? "",
+          email: emails,
+          phone,
+          profile_image_url: profileImageUrl,
+          updated_at: new Date().toISOString(),
         })
         .commit()
     } else if (type === "user.deleted") {

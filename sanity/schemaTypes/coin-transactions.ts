@@ -1,8 +1,8 @@
 import { defineType } from "sanity"
 
 export default defineType({
-  name: "coinTransaction",
-  title: "Coin Transaction",
+  name: "coinTransactions",
+  title: "Coin Transactions",
   type: "document",
   fields: [
     {
