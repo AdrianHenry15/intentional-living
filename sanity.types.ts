@@ -68,6 +68,225 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type UserPreferences = {
+  _id: string;
+  _type: "userPreferences";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  theme?: "light" | "dark" | "system";
+  email_notifications?: boolean;
+  push_notifications?: boolean;
+  weekly_summary_enabled?: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type UserNotes = {
+  _id: string;
+  _type: "userNotes";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  date?: string;
+  content?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type UserGoals = {
+  _id: string;
+  _type: "userGoals";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  goal_name?: string;
+  active?: boolean;
+  count?: number;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type Referrals = {
+  _id: string;
+  _type: "referrals";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  referrer_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  referred_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  signup_date?: string;
+  reward_claimed?: boolean;
+  created_at?: string;
+};
+
+export type RatingQuestions = {
+  _id: string;
+  _type: "ratingQuestions";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  question_text?: string;
+  display_order?: number;
+  active?: boolean;
+  created_at?: string;
+};
+
+export type MotivationalQuotes = {
+  _id: string;
+  _type: "motivationalQuotes";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  quote_text?: string;
+  author_name?: string;
+};
+
+export type GoalTracking = {
+  _id: string;
+  _type: "goalTracking";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  goal_id?: string;
+  completed?: boolean;
+  days?: number;
+  created_at?: string;
+};
+
+export type Feedback = {
+  _id: string;
+  _type: "feedback";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  content?: string;
+  date?: string;
+  created_at?: string;
+};
+
+export type DailyTracking = {
+  _id: string;
+  _type: "dailyTracking";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  date?: string;
+  diet_check?: boolean;
+  exercise_check?: boolean;
+  no_sugar?: boolean;
+  mental_strength_check?: boolean;
+  wake_time?: string;
+  sleep_time?: string;
+  sleep_notes?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type DailyRatings = {
+  _id: string;
+  _type: "dailyRatings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  date?: string;
+  question_1_rating?: number;
+  question_2_rating?: number;
+  question_3_rating?: number;
+  question_4_rating?: number;
+  question_5_rating?: number;
+  question_6_rating?: number;
+  created_at?: string;
+};
+
+export type CoinTransactions = {
+  _id: string;
+  _type: "coinTransactions";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  user_id?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+  amount?: number;
+  transaction_type?: "credit" | "debit";
+  created_at?: string;
+};
+
+export type User = {
+  _id: string;
+  _type: "user";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  phone_verified?: boolean;
+  notification_time?: string;
+  timezone?: string;
+  profile_image_url?: string;
+  streak_count?: number;
+  last_streak_date?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Post = {
   _id: string;
   _type: "post";
@@ -278,5 +497,217 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | UserPreferences | UserNotes | UserGoals | Referrals | RatingQuestions | MotivationalQuotes | GoalTracking | Feedback | DailyTracking | DailyRatings | CoinTransactions | User | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./sanity/lib/coin-transactions/getAll.ts
+// Variable: ALL_COIN_TRANSACTIONS
+// Query: *[_type == "coinTransactions"] | order(created_at desc) {      _id,      created_at,      amount,      transaction_type,      user_id->{        _id,        name,        email      }    }
+export type ALL_COIN_TRANSACTIONSResult = Array<{
+  _id: string;
+  created_at: string | null;
+  amount: number | null;
+  transaction_type: "credit" | "debit" | null;
+  user_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+}>;
+
+// Source: ./sanity/lib/daily-ratings/getAll.ts
+// Variable: ALL_DAILY_RATINGS
+// Query: *[_type == "dailyRatings"] | order(date desc) {      _id,      date,      user_id->{        _id,        name,        email      },      question_1_rating,      question_2_rating,      question_3_rating,      question_4_rating,      question_5_rating,      question_6_rating,      created_at    }
+export type ALL_DAILY_RATINGSResult = Array<{
+  _id: string;
+  date: string | null;
+  user_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  question_1_rating: number | null;
+  question_2_rating: number | null;
+  question_3_rating: number | null;
+  question_4_rating: number | null;
+  question_5_rating: number | null;
+  question_6_rating: number | null;
+  created_at: string | null;
+}>;
+
+// Source: ./sanity/lib/daily-trackings/getAll.ts
+// Variable: ALL_DAILY_TRACKINGS
+// Query: *[_type == "dailyTracking"] | order(date desc) {      _id,      date,      user_id->{        _id,        name,        email      },      diet_check,      exercise_check,      no_sugar,      mental_strength_check,      wake_time,      sleep_time,      sleep_notes,      created_at,      updated_at    }
+export type ALL_DAILY_TRACKINGSResult = Array<{
+  _id: string;
+  date: string | null;
+  user_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  diet_check: boolean | null;
+  exercise_check: boolean | null;
+  no_sugar: boolean | null;
+  mental_strength_check: boolean | null;
+  wake_time: string | null;
+  sleep_time: string | null;
+  sleep_notes: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}>;
+
+// Source: ./sanity/lib/feedback/getAll.ts
+// Variable: ALL_FEEDBACK
+// Query: *[_type == "feedback"] | order(date desc) {      _id,      content,      date,      user_id->{        _id,        name,        email      },      created_at    }
+export type ALL_FEEDBACKResult = Array<{
+  _id: string;
+  content: string | null;
+  date: string | null;
+  user_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  created_at: string | null;
+}>;
+
+// Source: ./sanity/lib/goal-tracking/getAll.ts
+// Variable: ALL_GOAL_TRACKING
+// Query: *[_type == "goalTracking"] | order(created_at desc) {      _id,      goal_id,      completed,      days,      user_id->{        _id,        name,        email      },      created_at    }
+export type ALL_GOAL_TRACKINGResult = Array<{
+  _id: string;
+  goal_id: string | null;
+  completed: boolean | null;
+  days: number | null;
+  user_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  created_at: string | null;
+}>;
+
+// Source: ./sanity/lib/motivational-quotes/getAll.ts
+// Variable: ALL_MOTIVATIONAL_QUOTES
+// Query: *[_type == "motivationalQuotes"] {      _id,      quote_text,      author_name    }
+export type ALL_MOTIVATIONAL_QUOTESResult = Array<{
+  _id: string;
+  quote_text: string | null;
+  author_name: string | null;
+}>;
+
+// Source: ./sanity/lib/rating-questions/getAll.ts
+// Variable: ALL_RATING_QUESTIONS
+// Query: *[_type == "ratingQuestions"] | order(display_order asc) {      _id,      question_text,      display_order,      active,      created_at    }
+export type ALL_RATING_QUESTIONSResult = Array<{
+  _id: string;
+  question_text: string | null;
+  display_order: number | null;
+  active: boolean | null;
+  created_at: string | null;
+}>;
+
+// Source: ./sanity/lib/referrals/getAll.ts
+// Variable: ALL_REFERRALS
+// Query: *[_type == "referrals"] | order(signup_date desc) {      _id,      referrer_id->{        _id,        name,        email      },      referred_id->{        _id,        name,        email      },      signup_date,      reward_claimed,      created_at    }
+export type ALL_REFERRALSResult = Array<{
+  _id: string;
+  referrer_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  referred_id: {
+    _id: string;
+    name: null;
+    email: null;
+  } | null;
+  signup_date: string | null;
+  reward_claimed: boolean | null;
+  created_at: string | null;
+}>;
+
+// Source: ./sanity/lib/user-goals/getAll.ts
+// Variable: ALL_USER_GOALS
+// Query: *[_type == "userGoals"] | order(created_at desc) {      _id,      user_id->{first_name, last_name},      goal_name,      active,      count,      created_at,      updated_at    }
+export type ALL_USER_GOALSResult = Array<{
+  _id: string;
+  user_id: {
+    first_name: string | null;
+    last_name: string | null;
+  } | null;
+  goal_name: string | null;
+  active: boolean | null;
+  count: number | null;
+  created_at: string | null;
+  updated_at: string | null;
+}>;
+
+// Source: ./sanity/lib/user-notes/getAll.ts
+// Variable: ALL_USER_NOTES
+// Query: *[_type == "userNotes"] | order(created_at desc) {      _id,      user_id->{first_name, last_name},      date,      content,      created_at,      updated_at    }
+export type ALL_USER_NOTESResult = Array<{
+  _id: string;
+  user_id: {
+    first_name: string | null;
+    last_name: string | null;
+  } | null;
+  date: string | null;
+  content: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}>;
+
+// Source: ./sanity/lib/user-preferences/getAll.ts
+// Variable: ALL_USER_PREFERENCES
+// Query: *[_type == "userPreferences"] | order(created_at desc) {      _id,      user_id->{first_name, last_name},      theme,      email_notifications,      push_notifications,      weekly_summary_enabled,      created_at,      updated_at    }
+export type ALL_USER_PREFERENCESResult = Array<{
+  _id: string;
+  user_id: {
+    first_name: string | null;
+    last_name: string | null;
+  } | null;
+  theme: "dark" | "light" | "system" | null;
+  email_notifications: boolean | null;
+  push_notifications: boolean | null;
+  weekly_summary_enabled: boolean | null;
+  created_at: string | null;
+  updated_at: string | null;
+}>;
+
+// Source: ./sanity/lib/user/getAll.ts
+// Variable: ALL_USERS
+// Query: *[_type == "user"] | order(created_at desc) {      _id,      first_name,      last_name,      phone,      phone_verified,      notification_time,      timezone,      profile_image_url,      streak_count,      last_streak_date,      created_at,      updated_at    }
+export type ALL_USERSResult = Array<{
+  _id: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  phone_verified: boolean | null;
+  notification_time: string | null;
+  timezone: string | null;
+  profile_image_url: string | null;
+  streak_count: number | null;
+  last_streak_date: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "\n    *[_type == \"coinTransactions\"] | order(created_at desc) {\n      _id,\n      created_at,\n      amount,\n      transaction_type,\n      user_id->{\n        _id,\n        name,\n        email\n      }\n    }\n  ": ALL_COIN_TRANSACTIONSResult;
+    "\n    *[_type == \"dailyRatings\"] | order(date desc) {\n      _id,\n      date,\n      user_id->{\n        _id,\n        name,\n        email\n      },\n      question_1_rating,\n      question_2_rating,\n      question_3_rating,\n      question_4_rating,\n      question_5_rating,\n      question_6_rating,\n      created_at\n    }\n  ": ALL_DAILY_RATINGSResult;
+    "\n    *[_type == \"dailyTracking\"] | order(date desc) {\n      _id,\n      date,\n      user_id->{\n        _id,\n        name,\n        email\n      },\n      diet_check,\n      exercise_check,\n      no_sugar,\n      mental_strength_check,\n      wake_time,\n      sleep_time,\n      sleep_notes,\n      created_at,\n      updated_at\n    }\n  ": ALL_DAILY_TRACKINGSResult;
+    "\n    *[_type == \"feedback\"] | order(date desc) {\n      _id,\n      content,\n      date,\n      user_id->{\n        _id,\n        name,\n        email\n      },\n      created_at\n    }\n  ": ALL_FEEDBACKResult;
+    "\n    *[_type == \"goalTracking\"] | order(created_at desc) {\n      _id,\n      goal_id,\n      completed,\n      days,\n      user_id->{\n        _id,\n        name,\n        email\n      },\n      created_at\n    }\n  ": ALL_GOAL_TRACKINGResult;
+    "\n    *[_type == \"motivationalQuotes\"] {\n      _id,\n      quote_text,\n      author_name\n    }\n  ": ALL_MOTIVATIONAL_QUOTESResult;
+    "\n    *[_type == \"ratingQuestions\"] | order(display_order asc) {\n      _id,\n      question_text,\n      display_order,\n      active,\n      created_at\n    }\n  ": ALL_RATING_QUESTIONSResult;
+    "\n    *[_type == \"referrals\"] | order(signup_date desc) {\n      _id,\n      referrer_id->{\n        _id,\n        name,\n        email\n      },\n      referred_id->{\n        _id,\n        name,\n        email\n      },\n      signup_date,\n      reward_claimed,\n      created_at\n    }\n  ": ALL_REFERRALSResult;
+    "\n    *[_type == \"userGoals\"] | order(created_at desc) {\n      _id,\n      user_id->{first_name, last_name},\n      goal_name,\n      active,\n      count,\n      created_at,\n      updated_at\n    }\n  ": ALL_USER_GOALSResult;
+    "\n    *[_type == \"userNotes\"] | order(created_at desc) {\n      _id,\n      user_id->{first_name, last_name},\n      date,\n      content,\n      created_at,\n      updated_at\n    }\n  ": ALL_USER_NOTESResult;
+    "\n    *[_type == \"userPreferences\"] | order(created_at desc) {\n      _id,\n      user_id->{first_name, last_name},\n      theme,\n      email_notifications,\n      push_notifications,\n      weekly_summary_enabled,\n      created_at,\n      updated_at\n    }\n  ": ALL_USER_PREFERENCESResult;
+    "\n    *[_type == \"user\"] | order(created_at desc) {\n      _id,\n      first_name,\n      last_name,\n      phone,\n      phone_verified,\n      notification_time,\n      timezone,\n      profile_image_url,\n      streak_count,\n      last_streak_date,\n      created_at,\n      updated_at\n    }\n  ": ALL_USERSResult;
+  }
+}

@@ -7,6 +7,8 @@ import { ClerkLoaded, UserButton, useUser } from "@clerk/nextjs"
 import SignInModal from "@/components/sign-in-modal"
 import { isAdmin } from "@/lib/check-admin"
 import { CgCommunity } from "react-icons/cg"
+import { MdRoomPreferences } from "react-icons/md"
+import UserPreferencesPage from "./user-preferences"
 
 const UserIcon = () => {
   const { user } = useUser()
@@ -34,9 +36,16 @@ const UserIcon = () => {
             <UserButton.UserProfilePage
               label="Streak"
               url="streak"
-              labelIcon={<CgCommunity />}>
+              labelIcon={<CgCommunity size={20} />}>
               {/* Render User Streak */}
               <span>Streak</span>
+            </UserButton.UserProfilePage>
+            <UserButton.UserProfilePage
+              label="Preferences"
+              url="preferences"
+              labelIcon={<MdRoomPreferences size={20} />}>
+              {/* Render User Preferences */}
+              <UserPreferencesPage />
             </UserButton.UserProfilePage>
           </UserButton>
           <div className="hidden sm:block text-xs text-gray-600">

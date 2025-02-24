@@ -83,7 +83,6 @@ export default defineType({
       lastName: "last_name",
       phone: "phone",
       streak: "streak_count",
-      image: "profile_image_url",
     },
     prepare({ firstName, lastName, phone, streak }) {
       return {
