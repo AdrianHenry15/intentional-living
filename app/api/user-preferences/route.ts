@@ -8,18 +8,17 @@ export async function POST(req: Request) {
     if (!userId)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const {
-      theme,
-      email_notifications,
-      push_notifications,
-      weekly_summary_enabled,
-    } = await req.json()
+    const formData = await req.formData()
+    const theme = formData.get("theme")
+    const email_notifications = formData.get("email_notifications") === "true"
+    const push_notifications = formData.get("push_notifications") === "true"
+    const weekly_summary_enabled =
+      formData.get("weekly_summary_enabled") === "true"
 
     if (!theme) {
       return NextResponse.json({ error: "Theme is required" }, { status: 400 })
     }
 
-    // Find existing preference
     const existingPreferences = await client.fetch(
       `*[_type == "userPreferences" && user_id._ref == $userId][0]`,
       { userId }
@@ -32,7 +31,6 @@ export async function POST(req: Request) {
       )
     }
 
-    // Update user preferences in Sanity
     const updatedPreferences = await client
       .patch(existingPreferences._id)
       .set({
