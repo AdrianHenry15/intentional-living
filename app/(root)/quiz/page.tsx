@@ -1,8 +1,25 @@
-export default function QuizPage() {
+import Quiz from "@/components/quiz/quiz"
+
+const QuizPage = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-900 text-white">
-      <h5>Quiz Page</h5>
+    <div
+      className="min-h-screen flex items-center justify-center bg-black 
+                    relative overflow-hidden px-6 md:px-0">
+      {/* 🔥 Animated Gradient Background */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-yellow-500 via-black to-yellow-900 
+                      animate-pulse opacity-40"></div>
+
+      {/* 🔥 Floating Glows for Extra Depth */}
+      <div className="absolute w-96 h-96 bg-yellow-500 rounded-full blur-[140px] opacity-30 top-10 left-10"></div>
+      <div className="absolute w-72 h-72 bg-yellow-400 rounded-full blur-[100px] opacity-25 bottom-10 right-10"></div>
+
+      {/* Actual Quiz Component */}
+      <div className="relative z-10 w-full max-w-[500px]">
+        <Quiz />
+      </div>
     </div>
   )
 }
-// quiz blog about
+
+export default QuizPage
