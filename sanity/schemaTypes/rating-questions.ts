@@ -23,13 +23,6 @@ export default defineType({
       type: "boolean",
       initialValue: true,
     },
-    {
-      name: "created_at",
-      title: "Created At",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-      validation: (Rule) => Rule.required(),
-    },
   ],
   preview: {
     select: {
