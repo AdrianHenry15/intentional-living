@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -38,7 +39,7 @@ const Quiz = () => {
         submitRatings(updatedRatings) // Send data after the last question
       }
       setIsTransitioning(false)
-    }, 800)
+    }, 100)
   }
 
   const handleBack = () => {
@@ -47,7 +48,7 @@ const Quiz = () => {
       setTimeout(() => {
         setCurrentQuestion((prev) => prev - 1)
         setIsTransitioning(false)
-      }, 500)
+      }, 100)
     }
   }
 
@@ -56,7 +57,7 @@ const Quiz = () => {
 
     setIsSubmitting(true)
     try {
-      await axios.post("/api/dailyRatings", {
+      await axios.post("http://localhost:3000/api/daily-ratings", {
         user_id: userId,
         date: new Date().toISOString(),
         question_1_rating: ratings[0] || 1,

@@ -15,7 +15,7 @@ const nextConfig = {
   },
   env: {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
+    // CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
     SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
     SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
   },
