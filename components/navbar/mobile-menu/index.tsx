@@ -12,7 +12,8 @@ import { FaBlog, FaInfoCircle } from "react-icons/fa"
 import { SiPivotaltracker } from "react-icons/si"
 import { FaNotesMedical } from "react-icons/fa6"
 import { MdQuiz } from "react-icons/md"
-import { NavItems } from "@/lib/constants"
+import { getNavItems } from "@/lib/constants"
+import { useUser } from "@clerk/nextjs"
 
 const sidebarVariants = {
   hidden: { x: "-100%" },
@@ -23,6 +24,8 @@ const sidebarVariants = {
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { user } = useUser()
 
   // Function to return an icon based on the title
   const getIcon = (title: string): React.ReactNode => {
@@ -84,7 +87,7 @@ const MobileMenu = () => {
 
               {/* Menu Items */}
               <nav className="mt-6 space-y-6">
-                {NavItems.map((item, index) => (
+                {getNavItems(user?.id).map((item, index) => (
                   <LinkItem
                     key={index}
                     link={item.link}

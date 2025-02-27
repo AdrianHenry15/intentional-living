@@ -8,8 +8,9 @@ import Logo from "@/public/assets/il-logo.png"
 import MobileMenu from "./mobile-menu"
 import UserIcon from "./user/user-icon"
 import { Button } from "../button"
-import { NavItems } from "@/lib/constants"
 import { NavMenuType } from "@/lib/types"
+import { getNavItems } from "@/lib/constants"
+import { useUser } from "@clerk/nextjs"
 
 interface INavbarProps {
   className?: string
@@ -18,6 +19,7 @@ interface INavbarProps {
 export default function Navbar(props: INavbarProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const { user } = useUser()
 
   return (
     <>
@@ -37,7 +39,7 @@ export default function Navbar(props: INavbarProps) {
             </Link>
             {/* LINKS */}
             <ul className="hidden text-white items-center xl:flex">
-              {NavItems.map((item: NavMenuType) => (
+              {getNavItems(user?.id).map((item: NavMenuType) => (
                 <li
                   className={`mx-2 transition-all duration-300 ease-in-out hover:text-zinc-500 hover:underline ${
                     pathname === item.link ? "underline" : ""
