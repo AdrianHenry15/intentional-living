@@ -3,7 +3,7 @@ import { Home, List, User, Bookmark, Activity } from "lucide-react"
 export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
-    link: `/tracker/`,
+    link: `/tracker/${userId}`,
     icon: Activity,
   },
   {
