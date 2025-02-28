@@ -8,7 +8,6 @@ export const getAllRatingQuestions = async () => {
       question_text,
       display_order,
       active,
-      created_at
     }
   `)
 
