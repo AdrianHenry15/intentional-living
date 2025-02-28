@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
-import { startOfDay, endOfDay } from "date-fns"
 import { client } from "@/sanity/lib/client"
 import { getAllDailyTrackings } from "@/sanity/lib/daily-trackings/getAll"
 
+// **GET - Fetch User's Daily Tracking Entries**
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { userId: string } }
 ) {
   try {
-    const userId = (await params).userId // No need to await params
+    const { userId } = params
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 })
     }
@@ -33,19 +33,20 @@ export async function GET(
 
 // **POST - Create a New Tracking Entry for a User**
 export async function POST(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { userId: string } }
 ) {
   try {
     const { userId } = params
-    if (!userId)
+    if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 })
+    }
 
     const today = new Date().toISOString().split("T")[0]
 
     // Check if an entry for today exists
-    const query = `*[_type == "dailyTracking" && user_id._ref == $userId && date match "${today}*"][0]`
-    const existingEntry = await client.fetch(query, { userId })
+    const query = `*[_type == "dailyTracking" && user_id._ref == $userId && date == $today][0]`
+    const existingEntry = await client.fetch(query, { userId, today })
 
     if (existingEntry) {
       return NextResponse.json(
@@ -54,11 +55,11 @@ export async function POST(
       )
     }
 
-    // Create new entry
+    // Create new tracking entry
     const newTracking = {
       _type: "dailyTracking",
       user_id: { _type: "reference", _ref: userId },
-      date: new Date().toISOString(),
+      date: today,
       diet_check: false,
       exercise_check: false,
       no_sugar: false,
@@ -84,7 +85,7 @@ export async function POST(
 
 // **PUT - Update an Existing Tracking Entry**
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { userId: string } }
 ) {
   try {
