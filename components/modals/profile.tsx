@@ -6,6 +6,7 @@ import React from "react"
 import UserDefaultImg from "@/public/assets/user-default-image.png"
 import { FaGear } from "react-icons/fa6"
 import { Button } from "../button"
+import Link from "next/link"
 
 const Profile = () => {
   const { user } = useUser()
@@ -28,16 +29,18 @@ const Profile = () => {
         </div>
 
         {/* Settings Icon */}
-        <button className="p-2 rounded-full hover:bg-gray-700 transition">
+        <Link
+          href={"/auth/settings"}
+          className="p-2 rounded-full hover:bg-gray-700 transition">
           <FaGear className="text-xl" />
-        </button>
+        </Link>
       </div>
 
       {/* Logout Button */}
-      <div className="mt-4">
+      <div className="mt-4 w-full flex justify-center items-end">
         <Button
           onClick={() => signOut()}
-          className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition">
+          className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition md:w-[400px]">
           Logout
         </Button>
       </div>
