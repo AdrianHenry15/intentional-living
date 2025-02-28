@@ -3,7 +3,7 @@ import { Home, PencilIcon, User, ReceiptIcon, BicepsFlexed } from "lucide-react"
 export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
-    link: `/tracker/${userId}`,
+    link: `/tracker/${userId || ""}`,
     icon: BicepsFlexed,
   },
   {
@@ -23,7 +23,7 @@ export const getNavItems = (userId?: string) => [
   },
   {
     title: "Profile",
-    link: `/user-profile/${userId}`,
+    link: "/profile",
     icon: User,
   },
 ]
