@@ -1,9 +1,10 @@
+"use client"
+
+import { useUser } from "@clerk/nextjs"
 import Hero from "../../components/hero"
+import DailyHomePageTracker from "@/components/daily-homepage-tracker"
 
 export default function Home() {
-  return (
-    <main>
-      <Hero />
-    </main>
-  )
+  const { isSignedIn } = useUser()
+  return <main>{!isSignedIn ? <Hero /> : <DailyHomePageTracker />}</main>
 }
