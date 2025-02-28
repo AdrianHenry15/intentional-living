@@ -18,7 +18,7 @@ export default function BottomNavbar() {
       {navItems.map(({ title, link, icon: Icon }) => (
         <Link
           key={title}
-          href={link}
+          href={link!}
           className="flex flex-col items-center text-gray-600 hover:text-black">
           <Icon
             size={24}

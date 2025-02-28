@@ -3,12 +3,12 @@ import { Home, PencilIcon, User, ReceiptIcon, BicepsFlexed } from "lucide-react"
 export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
-    link: `/tracker/${userId}`,
+    link: `/auth/tracker/${userId}`,
     icon: BicepsFlexed,
   },
   {
     title: "Notes",
-    link: `/notes/`,
+    link: `/auth/notes`,
     icon: PencilIcon,
   },
   {
@@ -18,12 +18,12 @@ export const getNavItems = (userId?: string) => [
   },
   {
     title: "Referral",
-    link: `/referral`,
+    link: `/auth/referral`,
     icon: ReceiptIcon,
   },
   {
     title: "Profile",
-    link: `/user-profile/${userId}`,
+    link: "/auth/profile",
     icon: User,
   },
 ]
