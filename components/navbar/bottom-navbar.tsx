@@ -24,7 +24,7 @@ export default function BottomNavbar() {
             size={24}
             className={pathname === link ? "text-black" : "text-gray-400"}
           />
-          <span className="text-xs">{title}</span>
+          {/* <span className="text-xs">{title}</span> */}
         </Link>
       ))}
     </motion.nav>

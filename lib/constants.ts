@@ -1,15 +1,15 @@
-import { Home, List, User, Bookmark, Activity } from "lucide-react"
+import { Home, PencilIcon, User, ReceiptIcon, BicepsFlexed } from "lucide-react"
 
 export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
     link: `/tracker/${userId}`,
-    icon: Activity,
+    icon: BicepsFlexed,
   },
   {
     title: "Notes",
     link: `/notes/`,
-    icon: Bookmark,
+    icon: PencilIcon,
   },
   {
     title: "Home",
@@ -19,7 +19,7 @@ export const getNavItems = (userId?: string) => [
   {
     title: "Referral",
     link: `/referral`,
-    icon: List,
+    icon: ReceiptIcon,
   },
   {
     title: "Profile",
