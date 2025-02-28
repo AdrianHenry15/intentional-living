@@ -26,6 +26,7 @@
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.476.0",
     "next": "15.1.7",
+    "next-pwa": "^5.6.0",
     "next-sanity": "^9.8.59",
     "react": "^19.0.0",
     "react-big-calendar": "^1.18.0",
@@ -38,6 +39,7 @@
     "styled-components": "^6.1.15",
     "svix": "^1.59.1",
     "tailwind-merge": "^3.0.2",
+    "web-push": "^3.6.7",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -46,6 +48,7 @@
     "@types/react": "^19",
     "@types/react-big-calendar": "^1.16.1",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",
