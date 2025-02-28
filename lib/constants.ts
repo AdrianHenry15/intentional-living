@@ -18,7 +18,7 @@ export const getNavItems = (userId?: string) => [
   },
   {
     title: "Referral",
-    link: `/auth/referral`,
+    link: `/auth/referral/${userId}`,
     icon: ReceiptIcon,
   },
   {
