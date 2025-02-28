@@ -1,22 +1,29 @@
+import { Home, List, User, Bookmark, Activity } from "lucide-react"
+
 export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
-    link: `/tracker/${userId}`,
+    link: `/tracker/`,
+    icon: Activity,
   },
   {
     title: "Notes",
-    link: `/notes/${userId}`,
+    link: `/notes/`,
+    icon: Bookmark,
   },
   {
-    title: "Quiz",
-    link: `/quiz/${userId}`, // No userId needed
+    title: "Home",
+    link: `/`,
+    icon: Home,
   },
   {
-    title: "Blog",
-    link: "/blog", // No userId needed
+    title: "Referral",
+    link: `/referral`,
+    icon: List,
   },
   {
-    title: "About",
-    link: "/about", // No userId needed
+    title: "Profile",
+    link: `/user-profile/${userId}`,
+    icon: User,
   },
 ]

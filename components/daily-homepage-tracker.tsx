@@ -9,7 +9,7 @@ const DailyHomePageTracker = () => {
   const { user } = useUser()
 
   return (
-    <div className="flex flex-col items-center p-4 bg-gradient-to-b from-yellow-400 to-white min-h-screen w-full text-black">
+    <div className="flex flex-col p-4 bg-gradient-to-b from-yellow-400 to-white min-h-screen w-full text-black">
       {/* Welcome Message */}
       <motion.h5
         className="text-6xl p-6 text-start"
