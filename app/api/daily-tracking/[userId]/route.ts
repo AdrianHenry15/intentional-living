@@ -5,10 +5,10 @@ import { getAllDailyTrackings } from "@/sanity/lib/daily-trackings/getAll"
 // **GET - Fetch User's Daily Tracking Entries**
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
-    const { userId } = params
+    const userId = (await params).userId
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 })
     }
@@ -34,10 +34,10 @@ export async function GET(
 // **POST - Create a New Tracking Entry for a User**
 export async function POST(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
-    const { userId } = params
+    const userId = (await params).userId
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 })
     }
@@ -84,10 +84,7 @@ export async function POST(
 }
 
 // **PUT - Update an Existing Tracking Entry**
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function PUT(req: NextRequest) {
   try {
     const { trackingId, updates } = await req.json()
     if (!trackingId || !updates) {
