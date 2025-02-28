@@ -818,13 +818,6 @@
           "type": "boolean"
         },
         "optional": true
-      },
-      "created_at": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
       }
     }
   },

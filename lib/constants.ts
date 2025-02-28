@@ -1,22 +1,29 @@
-export const NavItems = [
+import { Home, PencilIcon, User, ReceiptIcon, BicepsFlexed } from "lucide-react"
+
+export const getNavItems = (userId?: string) => [
   {
     title: "Tracker",
-    link: "/tracker",
+    link: `/tracker/${userId}`,
+    icon: BicepsFlexed,
   },
   {
     title: "Notes",
-    link: "/notes",
+    link: `/notes/`,
+    icon: PencilIcon,
   },
   {
-    title: "Quiz",
-    link: "/quiz",
+    title: "Home",
+    link: `/`,
+    icon: Home,
   },
   {
-    title: "Blog",
-    link: "/blog",
+    title: "Referral",
+    link: `/referral`,
+    icon: ReceiptIcon,
   },
   {
-    title: "About",
-    link: "/about",
+    title: "Profile",
+    link: `/user-profile/${userId}`,
+    icon: User,
   },
 ]
