@@ -43,6 +43,24 @@ const DailyHomePageTracker = () => {
           percentage="100"
           data="Complete"
         />
+        <DataWidget
+          icon={<FaCandyCane size={22} />}
+          title="Mental Strength"
+          percentage="100"
+          data="Complete"
+        />
+        <DataWidget
+          icon={<FaCandyCane size={22} />}
+          title="Custom Goal 1"
+          percentage="100"
+          data="Complete"
+        />
+        <DataWidget
+          icon={<FaCandyCane size={22} />}
+          title="Custom Goal 1"
+          percentage="100"
+          data="Complete"
+        />
       </motion.div>
     </div>
   )

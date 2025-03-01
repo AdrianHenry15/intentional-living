@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Trash, Edit, Plus, Check } from "lucide-react"
-import { useNoteStore } from "@/store/useNoteStore"
+import { useNoteStore } from "@/store/use-note-store"
 
 export default function NotesPage() {
   const { notes, addNote, updateNote, deleteNote } = useNoteStore()
