@@ -28,19 +28,19 @@ const DailyHomePageTracker = () => {
         <DataWidget
           icon={<FaCookie size={22} />}
           title="Diet"
-          date="Feb 15"
+          percentage="100"
           data="Complete"
         />
         <DataWidget
           icon={<MdFitnessCenter size={22} />}
           title="Exercise"
-          date="Feb 15"
+          percentage="100"
           data="Complete"
         />
         <DataWidget
           icon={<FaCandyCane size={22} />}
           title="Sugar Intake"
-          date="Feb 15"
+          percentage="100"
           data="Complete"
         />
       </motion.div>
