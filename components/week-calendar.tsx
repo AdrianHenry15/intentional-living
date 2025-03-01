@@ -1,10 +1,10 @@
 "use client"
 
-import { useWeekStore } from "@/store/useWeekStore"
 import { isSameWeek, isToday, addDays, format } from "date-fns"
 import clsx from "clsx"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion } from "framer-motion"
+import { useCalendarStore } from "@/store/use-calendar-store"
 
 const WeekCalendar = () => {
   const {
@@ -15,7 +15,7 @@ const WeekCalendar = () => {
     nextWeek,
     prevWeek,
     resetWeek,
-  } = useWeekStore()
+  } = useCalendarStore()
 
   const isCurrentWeek = isSameWeek(currentWeekStart, new Date(), {
     weekStartsOn: 0,
@@ -28,7 +28,9 @@ const WeekCalendar = () => {
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={clsx(
         "w-full text-white shadow-lg flex flex-col py-2",
-        isCurrentWeek ? "bg-yellow-500" : "bg-yellow-500/75"
+        isCurrentWeek
+          ? "bg-gradient-to-b from-white to-yellow-400"
+          : "bg-gradient-to-b from-white/50 to-yellow-400"
       )}>
       {/* Week Navigation */}
       <div className="flex justify-between py-1 px-2 text-sm mb-2 text-black">

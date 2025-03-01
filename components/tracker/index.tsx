@@ -9,7 +9,7 @@ import { FaBrain } from "react-icons/fa"
 
 const Tracker = () => {
   return (
-    <div className="flex flex-col p-4 bg-gradient-to-b from-white to-yellow-500 min-h-screen w-full text-black">
+    <div className="flex flex-col p-4 bg-gradient-to-b from-yellow-400 to-black min-h-screen w-full text-black">
       {/* Welcome Message */}
       {/* <motion.h5
         className="text-6xl p-6 text-start"

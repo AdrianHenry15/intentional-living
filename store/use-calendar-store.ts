@@ -19,7 +19,7 @@ const getWeekDays = (startDate: Date) => {
   })
 }
 
-export const useWeekStore = create<WeekState>((set) => {
+export const useCalendarStore = create<WeekState>((set) => {
   const today = new Date()
   const weekStart = startOfWeek(today, { weekStartsOn: 0 })
 
