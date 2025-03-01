@@ -6,12 +6,12 @@ interface IDataWidgetProps {
   icon: React.ReactNode
   title: string
   data: string
-  date?: string
+  percentage: string
   time?: string
 }
 
 const DataWidget = (props: IDataWidgetProps) => {
-  const { icon, title, data, date, time } = props
+  const { icon, title, data, percentage, time } = props
 
   return (
     <motion.div
@@ -35,10 +35,7 @@ const DataWidget = (props: IDataWidgetProps) => {
 
         {/* Date/Time and Chevron */}
         <div className="flex items-center space-x-2 text-gray-300 text-xs">
-          <p>{date ? date : time}</p>
-          <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.3 }}>
-            <FaChevronRight size={12} className="text-gray-400" />
-          </motion.div>
+          <p className="text-green-500">{percentage ? percentage : time}%</p>
         </div>
       </div>
 
