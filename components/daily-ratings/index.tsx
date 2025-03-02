@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -9,7 +8,7 @@ import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 
-const Quiz = () => {
+const DailyRatings = () => {
   const { user } = useUser()
   const userId = user?.id
   const userName = user?.fullName || "(Guest)"
@@ -21,10 +20,12 @@ const Quiz = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-    if (userName) {
-      setQuestions(getQuestions(userName))
+    if (userId && userName) {
+      const newQuestions = getQuestions(userName)
+      console.log("Loaded questions:", newQuestions) // Debugging log
+      setQuestions(newQuestions)
     }
-  }, [userName])
+  }, [userId, userName])
 
   const handleNext = (rating: number) => {
     setIsTransitioning(true)
@@ -136,7 +137,9 @@ const Quiz = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 1 } }}>
-          <h2 className="text-2xl font-bold text-center">Quiz Completed!</h2>
+          <h2 className="text-2xl font-bold text-center">
+            DailyRatings Completed!
+          </h2>
           <p className="text-center mt-4 text-lg font-medium">
             Thank you for completing the life tracker. Your responses have been
             recorded.
@@ -147,4 +150,4 @@ const Quiz = () => {
   )
 }
 
-export default Quiz
+export default DailyRatings

@@ -1,26 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
-import { groq } from "next-sanity"
 import { client } from "@/sanity/lib/client"
+import { groq } from "next-sanity"
+import { getAllDailyRatings } from "@/sanity/lib/daily-ratings/getAll"
 
 export async function GET(req: NextRequest) {
   try {
     const { userId } = await auth()
-
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const query = groq`
-      *[_type == "dailyRatings" && user_id._ref == $userId] | order(date desc) {
-        _id, date, question_1_rating, question_2_rating, question_3_rating,
-        question_4_rating, question_5_rating, question_6_rating
-      }
-    `
-
-    const data = await client.fetch(query, { userId })
-    return NextResponse.json(data, { status: 200 })
+    const ratings = await getAllDailyRatings()
+    return NextResponse.json(ratings, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch daily ratings" },
@@ -32,30 +24,36 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth()
-
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const body = await req.json()
-    const { date, ratings } = body
+    const { ratings } = body
 
-    if (!date || !ratings || ratings.length !== 6) {
+    if (!ratings || ratings.length !== 6) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 })
     }
 
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0]
+
+    // Check if today's entry already exists
     const existingEntryQuery = groq`
-      *[_type == "dailyRatings" && user_id._ref == $userId && date == $date][0]
+      *[_type == "dailyRatings" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
     `
 
-    const existingEntry = await client.fetch(existingEntryQuery, {
+    const params = {
       userId,
-      date,
-    })
+      todayStart: `${today}T00:00:00Z`,
+      tomorrow: `${today}T23:59:59Z`,
+    }
+
+    const existingEntry = await client.fetch(existingEntryQuery, params)
 
     if (existingEntry) {
       return NextResponse.json(
-        { error: "Daily rating already exists" },
+        { error: "Daily rating already exists for today" },
         { status: 409 }
       )
     }
@@ -63,7 +61,7 @@ export async function POST(req: NextRequest) {
     const newEntry = {
       _type: "dailyRatings",
       user_id: { _type: "reference", _ref: userId },
-      date,
+      date: new Date().toISOString(),
       question_1_rating: ratings[0],
       question_2_rating: ratings[1],
       question_3_rating: ratings[2],
