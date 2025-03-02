@@ -6,13 +6,12 @@ export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const id = (await params).id
   try {
     const referrals = await getAllReferrals()
 
     // Filter referrals where `referrer_id` matches the requested ID
-    const userReferrals = referrals.filter(
-      (ref) => ref.referrer_id?._id === params.id
-    )
+    const userReferrals = referrals.filter((ref) => ref.referrer_id?._id === id)
 
     return NextResponse.json(
       { success: true, data: userReferrals },
@@ -32,7 +31,7 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params
+    const id = (await params).id
     const { reward_claimed } = await req.json()
 
     if (!id) {
@@ -61,7 +60,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params
+    const id = (await params).id
 
     if (!id) {
       return NextResponse.json(
