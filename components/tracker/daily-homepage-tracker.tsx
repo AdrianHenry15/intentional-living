@@ -1,12 +1,29 @@
 import { useUser } from "@clerk/nextjs"
 import React from "react"
 import { motion } from "framer-motion"
-import DataWidget from "../ui/data-widget"
-import { FaCandyCane, FaCookie } from "react-icons/fa6"
+import DataWidget from "../daily-trackings/data-widget"
+import { useDailyTrackingStore } from "@/store/use-daily-tracking-store"
+import { FaBrain, FaCandyCane, FaCookie } from "react-icons/fa"
 import { MdFitnessCenter } from "react-icons/md"
 
 const DailyHomePageTracker = () => {
   const { user } = useUser()
+
+  // Pull data from Zustand
+  const { primaryGoals } = useDailyTrackingStore()
+
+  const getIcon = (title: string): React.ReactNode => {
+    switch (title.toLowerCase()) {
+      case "diet":
+        return <FaCookie />
+      case "exercise":
+        return <MdFitnessCenter />
+      case "sugar intake":
+        return <FaCandyCane />
+      default:
+        return <FaBrain /> // Default icon
+    }
+  }
 
   return (
     <div className="flex flex-col p-4 bg-gradient-to-b from-yellow-400 to-white min-h-screen w-full text-black">
@@ -25,42 +42,15 @@ const DailyHomePageTracker = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}>
-        <DataWidget
-          icon={<FaCookie size={22} />}
-          title="Diet"
-          percentage="100"
-          data="Complete"
-        />
-        <DataWidget
-          icon={<MdFitnessCenter size={22} />}
-          title="Exercise"
-          percentage="100"
-          data="Complete"
-        />
-        <DataWidget
-          icon={<FaCandyCane size={22} />}
-          title="Sugar Intake"
-          percentage="100"
-          data="Complete"
-        />
-        <DataWidget
-          icon={<FaCandyCane size={22} />}
-          title="Mental Strength"
-          percentage="100"
-          data="Complete"
-        />
-        <DataWidget
-          icon={<FaCandyCane size={22} />}
-          title="Custom Goal 1"
-          percentage="100"
-          data="Complete"
-        />
-        <DataWidget
-          icon={<FaCandyCane size={22} />}
-          title="Custom Goal 1"
-          percentage="100"
-          data="Complete"
-        />
+        {primaryGoals.map((goal) => (
+          <DataWidget
+            icon={getIcon(goal.title)}
+            id={goal.id}
+            key={goal.id}
+            title={goal.title}
+            completed_days={goal.completed_days}
+          />
+        ))}
       </motion.div>
     </div>
   )

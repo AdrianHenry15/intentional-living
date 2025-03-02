@@ -2,7 +2,7 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import DataWidget from "../ui/data-widget"
+import DataWidget from "../daily-trackings/data-widget"
 import { FaCandyCane, FaCookie } from "react-icons/fa6"
 import { MdFitnessCenter } from "react-icons/md"
 import { FaBrain } from "react-icons/fa"
