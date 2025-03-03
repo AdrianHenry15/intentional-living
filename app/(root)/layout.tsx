@@ -18,7 +18,7 @@ export default function RootLayout({
 
   // useEffect(() => {
   //   if (isSignedIn) {
-  //     router.push("/auth/quiz") // Change this to your valid route
+  //     router.push("/auth/daily-ratings") // Change this to your valid route
   //   }
   // }, [isSignedIn, router])
 
