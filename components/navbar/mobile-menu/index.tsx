@@ -87,7 +87,7 @@ const MobileMenu = () => {
 
               {/* Menu Items */}
               <nav className="mt-6 space-y-6">
-                {getNavItems(user?.id).map((item, index) => (
+                {getNavItems().map((item, index) => (
                   <LinkItem
                     key={index}
                     link={item.link}

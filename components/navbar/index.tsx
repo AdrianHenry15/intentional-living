@@ -39,7 +39,7 @@ export default function Navbar(props: INavbarProps) {
             </Link>
             {/* LINKS */}
             <ul className="hidden text-white items-center xl:flex">
-              {getNavItems(user?.id).map((item: NavMenuType) => (
+              {getNavItems().map((item: NavMenuType) => (
                 <li
                   className={`mx-2 transition-all duration-300 ease-in-out hover:text-zinc-500 hover:underline ${
                     pathname === item.link ? "underline" : ""

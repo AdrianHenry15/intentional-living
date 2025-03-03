@@ -2,10 +2,10 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import DataWidget from "../daily-trackings/data-widget"
 import { FaCandyCane, FaCookie } from "react-icons/fa6"
 import { MdFitnessCenter } from "react-icons/md"
 import { FaBrain } from "react-icons/fa"
+import DataWidget from "../daily-trackings/data-widget"
 
 const Tracker = () => {
   return (
@@ -26,28 +26,28 @@ const Tracker = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}>
         <DataWidget
+          id={0}
           icon={<FaCookie size={22} />}
           title="Diet"
-          percentage="100"
-          data="Complete"
+          completed_days={0}
         />
         <DataWidget
+          id={1}
           icon={<MdFitnessCenter size={22} />}
           title="Exercise"
-          percentage="100"
-          data="Complete"
+          completed_days={0}
         />
         <DataWidget
+          id={2}
           icon={<FaCandyCane size={22} />}
           title="Sugar Intake"
-          percentage="100"
-          data="Complete"
+          completed_days={0}
         />
         <DataWidget
+          id={3}
           icon={<FaBrain size={22} />}
           title="Mental Strength"
-          percentage="100"
-          data="Complete"
+          completed_days={0}
         />
       </motion.div>
     </div>

@@ -1,10 +1,10 @@
 import { Home, PencilIcon, User, ReceiptIcon, BicepsFlexed } from "lucide-react"
 import { GoalType } from "./types"
 
-export const getNavItems = (userId?: string) => [
+export const getNavItems = () => [
   {
     title: "Tracker",
-    link: `/auth/tracker/${userId}`,
+    link: `/auth/tracker`,
     icon: BicepsFlexed,
   },
   {
@@ -19,7 +19,7 @@ export const getNavItems = (userId?: string) => [
   },
   {
     title: "Referral",
-    link: `/auth/referral/${userId}`,
+    link: `/auth/referrals`,
     icon: ReceiptIcon,
   },
   {
