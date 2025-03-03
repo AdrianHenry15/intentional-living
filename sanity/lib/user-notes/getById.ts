@@ -1,9 +1,11 @@
 import { defineQuery } from "next-sanity"
 import { sanityFetch } from "../live"
 
-export const getAllUserNotes = async () => {
-  const ALL_USER_NOTES = defineQuery(`
-    *[_type == "userNotes"] | order(created_at desc) {
+export const getUserNotesById = async (userId: string) => {
+  if (!userId) return []
+
+  const USER_NOTES_BY_ID = defineQuery(`
+    *[_type == "userNotes" && user_id._ref == $userId] | order(created_at desc) {
       _id,
       user_id->{first_name, last_name},
       date,
@@ -15,7 +17,8 @@ export const getAllUserNotes = async () => {
 
   try {
     const userNotes = await sanityFetch({
-      query: ALL_USER_NOTES,
+      query: USER_NOTES_BY_ID,
+      params: { userId },
     })
 
     return userNotes.data || []
