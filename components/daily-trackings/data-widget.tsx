@@ -23,9 +23,6 @@ const DataWidget: React.FC<IDataWidgetProps> = ({
 }) => {
   const [editing, setEditing] = React.useState(false)
   const [customTitle, setCustomTitle] = React.useState(title)
-  const markGoalComplete = useDailyTrackingStore(
-    (state) => state.markGoalComplete
-  )
 
   const handleEdit = () => {
     if (editing && onEdit) {
@@ -81,8 +78,8 @@ const DataWidget: React.FC<IDataWidgetProps> = ({
         <label className="flex items-center space-x-2">
           <input
             type="checkbox"
-            checked={completed_days >= 30}
-            onChange={() => markGoalComplete(id)}
+            // checked={completed_days >= 30}
+            // onChange={() => markGoalComplete(id)}
             className="w-5 h-5 text-green-400 bg-gray-700 rounded focus:ring-green-500 focus:ring-2"
           />
           <span className="text-sm text-gray-300">Complete</span>
