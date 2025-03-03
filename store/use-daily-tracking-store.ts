@@ -1,56 +1,51 @@
-import { primaryGoals } from "@/lib/constants"
-import { GoalType } from "@/lib/types"
 import { create } from "zustand"
 
-interface GoalStore {
-  primaryGoals: GoalType[]
-  customGoals: GoalType[]
-  addCustomGoal: () => void
-  markGoalComplete: (id: number) => void
-  editCustomGoal: (id: number, newTitle: string) => void
+interface DailyTracking {
+  id: string
+  userId: string
+  date: string
+  dietCheck: boolean
+  exerciseCheck: boolean
+  noSugar: boolean
+  mentalStrengthCheck: boolean
+  wakeTime: string
+  sleepTime: string
+  sleepNotes?: string
+  createdAt: string
+  updatedAt: string
 }
 
-export const useDailyTrackingStore = create<GoalStore>((set) => ({
-  primaryGoals: primaryGoals,
-  customGoals: [],
+interface DailyTrackingStore {
+  dailyTracking: DailyTracking | null
+  loading: boolean
+  error: string | null
+  fetchDailyTracking: (userId: string) => Promise<void>
+  updateDailyTracking: (updates: Partial<DailyTracking>) => void
+}
 
-  addCustomGoal: () =>
-    set((state) => {
-      if (state.customGoals.length < 2) {
-        const newGoal: GoalType = {
-          id: Date.now(),
-          title: "New Goal",
-          completed_days: 0,
-          isCustom: true,
-        }
+export const useDailyTrackingStore = create<DailyTrackingStore>((set) => ({
+  dailyTracking: null,
+  loading: false,
+  error: null,
 
-        return {
-          customGoals: [...state.customGoals, newGoal],
-        }
-      }
-      return {} // Ensure the return type is always Partial<GoalStore>
-    }),
+  fetchDailyTracking: async (userId) => {
+    set({ loading: true, error: null })
+    try {
+      const response = await fetch(`/api/daily-tracking?userId=${userId}`)
+      const data = await response.json()
 
-  markGoalComplete: (id) =>
-    set((state) => {
-      const updateGoal = (goal: GoalType) => {
-        if (goal.id === id) {
-          const updatedDays = Math.min(goal.completed_days + 1, 30) // Max 30 days in a month
-          return { ...goal, completedDays: updatedDays }
-        }
-        return goal
-      }
+      set({ dailyTracking: data, loading: false })
+    } catch (error) {
+      console.error("Error fetching daily tracking:", error)
+      set({ error: "Failed to load tracking data.", loading: false })
+    }
+  },
 
-      return {
-        primaryGoals: state.primaryGoals.map(updateGoal),
-        customGoals: state.customGoals.map(updateGoal),
-      }
-    }),
-
-  editCustomGoal: (id, newTitle) =>
+  updateDailyTracking: (updates) => {
     set((state) => ({
-      customGoals: state.customGoals.map((goal) =>
-        goal.id === id ? { ...goal, title: newTitle } : goal
-      ),
-    })),
+      dailyTracking: state.dailyTracking
+        ? { ...state.dailyTracking, ...updates }
+        : null,
+    }))
+  },
 }))
