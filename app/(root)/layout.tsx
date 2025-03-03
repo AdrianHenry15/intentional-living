@@ -16,11 +16,11 @@ export default function RootLayout({
   const pathname = usePathname()
   const router = useRouter()
 
-  useEffect(() => {
-    if (isSignedIn) {
-      router.push("/dashboard") // Change this to your valid route
-    }
-  }, [isSignedIn, router])
+  // useEffect(() => {
+  //   if (isSignedIn) {
+  //     router.push("/auth/quiz") // Change this to your valid route
+  //   }
+  // }, [isSignedIn, router])
 
   // Define base routes where the calendar should be hidden
   const hiddenRoutes = ["/auth/notes", "/auth/referral", "/auth/profile"]

@@ -11,7 +11,7 @@ const DailyHomePageTracker = () => {
   const { user } = useUser()
 
   // Pull data from Zustand
-  const { primaryGoals } = useDailyTrackingStore()
+  // const { primaryGoals } = useDailyTrackingStore()
 
   const getIcon = (title: string): React.ReactNode => {
     switch (title.toLowerCase()) {
@@ -46,7 +46,7 @@ const DailyHomePageTracker = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}>
-          {primaryGoals.map((goal) => (
+          {/* {primaryGoals.map((goal) => (
             <DataWidget
               icon={getIcon(goal.title)}
               id={goal.id}
@@ -54,8 +54,32 @@ const DailyHomePageTracker = () => {
               title={goal.title}
               completed_days={goal.completed_days}
             />
-          ))}
+          ))} */}
           <DataWidget
+            icon={<FaCookie />}
+            id={1}
+            title={"Diet"}
+            completed_days={30}
+          />
+          <DataWidget
+            icon={<MdFitnessCenter />}
+            id={1}
+            title={"Exercise"}
+            completed_days={30}
+          />
+          <DataWidget
+            icon={<FaCandyCane />}
+            id={1}
+            title={"Sugar Intake"}
+            completed_days={30}
+          />
+          <DataWidget
+            icon={<FaBrain />}
+            id={1}
+            title={"Mental Strength"}
+            completed_days={30}
+          />
+          {/* <DataWidget
             icon={<FaPenClip />}
             id={1}
             title={"Insert Custom Goal Here"}
@@ -66,7 +90,7 @@ const DailyHomePageTracker = () => {
             id={1}
             title={"Insert Custom Goal Here"}
             completed_days={30}
-          />
+          /> */}
         </motion.div>
       </div>
     </div>
