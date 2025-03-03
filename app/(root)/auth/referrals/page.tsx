@@ -1,22 +1,24 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import { Referrals } from "@/sanity.types"
 
 export default function ReferralPage() {
-  const { id } = useParams() // Get user ID from the URL
+  const { user } = useUser() // Get authenticated user
   const [referrals, setReferrals] = useState<Referrals[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
   useEffect(() => {
-    if (!id) return
+    if (!user?.id) return
 
     const fetchReferrals = async () => {
       try {
-        const response = await axios.get(`/api/referrals/${id}`)
+        const response = await axios.get(`/api/referrals`, {
+          params: { userId: user.id },
+        })
         console.log("Fetched referrals:", response.data) // Debugging
         setReferrals(response.data.data || [])
       } catch (error) {
@@ -28,7 +30,7 @@ export default function ReferralPage() {
     }
 
     fetchReferrals()
-  }, [id])
+  }, [user?.id])
 
   if (loading) return <p>Loading...</p>
   if (error) return <p className="text-red-500">{error}</p>
@@ -42,7 +44,6 @@ export default function ReferralPage() {
         <ul className="mt-4">
           {referrals.map((ref) => (
             <li key={ref._id} className="bg-gray-800 p-3 rounded-md mb-2">
-              {/* {ref.referred_id?.name || "Unknown"} -{" "} */}
               {ref.reward_claimed ? "✅ Reward Claimed" : "⏳ Pending"}
             </li>
           ))}

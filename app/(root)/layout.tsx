@@ -12,11 +12,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const { isSignedIn } = useUser()
-  const pathname = usePathname() // Get the current path
+  const pathname = usePathname()
+
+  // Define base routes where the calendar should be hidden
+  const hiddenRoutes = ["/auth/notes", "/auth/referral", "/auth/profile"]
+
+  // Check if pathname starts with any of the hidden routes (handles dynamic routes)
+  const shouldShowCalendar =
+    isSignedIn && !hiddenRoutes.some((route) => pathname.startsWith(route))
 
   return (
     <main className="sticky top-0 z-50 bg-gray-900 shadow-lg h-screen w-full flex flex-col">
-      {isSignedIn && pathname !== "/auth/notes" && <WeekCalendar />}
+      {shouldShowCalendar && <WeekCalendar />}
       {children}
       <SettingsWidget />
       <BottomNavbar />
