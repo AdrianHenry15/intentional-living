@@ -31,7 +31,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}>
-          <Link href={"/auth/quiz"}>
+          <Link href={"/auth/daily-ratings"}>
             <Button className="px-6 py-3 text-lg bg-black hover:bg-amber-400/50 transition">
               Get Started
             </Button>
