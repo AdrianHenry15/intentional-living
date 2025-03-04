@@ -29,8 +29,8 @@ const DailyHomePageTracker = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-4 bg-gradient-to-b from-yellow-400 to-white min-h-screen w-full text-black">
-      <div className="flex flex-col w-[950px]">
+    <div className="flex flex-col items-center p-4 bg-gradient-to-b from-yellow-400 to-white min-h-screen w-full text-black pb-64">
+      <div className="flex flex-col lg:w-[950px]">
         {/* Welcome Message */}
         <motion.h5
           className="text-6xl p-6 text-start"
