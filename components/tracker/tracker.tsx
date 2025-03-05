@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { TbCandy } from "react-icons/tb"
 import { FaBrain, FaCookieBite, FaRunning } from "react-icons/fa"
 import DataWidget from "../daily-trackings/data-widget"
-import { SiBraintree } from "react-icons/si"
 
 const Tracker = () => {
   const [dietCheck, setDietCheck] = useState(false)
@@ -20,7 +19,7 @@ const Tracker = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}>
-        {`Home`}
+        {`Tracker`}
       </motion.h5>
 
       {/* Data Widgets - Centered Grid */}

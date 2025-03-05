@@ -1,4 +1,4 @@
-import Tracker from "@/components/tracker"
+import Tracker from "@/components/tracker/tracker"
 
 export default async function TrackerPage() {
   return (

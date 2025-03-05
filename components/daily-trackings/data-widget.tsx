@@ -1,7 +1,8 @@
 import React, { useMemo } from "react"
 import { SiCheckmarx } from "react-icons/si"
-import { AiOutlineCloseCircle } from "react-icons/ai"
+import { AiOutlineCloseCircle, AiOutlineFileDone } from "react-icons/ai"
 import { motion } from "framer-motion"
+import { BsPencilSquare } from "react-icons/bs"
 
 interface IDataWidgetProps {
   icon: React.ReactNode
@@ -9,10 +10,24 @@ interface IDataWidgetProps {
   isComplete: boolean
   totalCompletions: number
   setIsComplete: () => void
+  setInputComplete?: () => void
+  inputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isCustom?: boolean
+  inputComplete?: boolean
 }
 
 const DataWidget = (props: IDataWidgetProps) => {
-  const { icon, setIsComplete, title, isComplete, totalCompletions } = props
+  const {
+    icon,
+    setIsComplete,
+    inputChange,
+    setInputComplete,
+    isCustom,
+    title,
+    isComplete,
+    totalCompletions,
+    inputComplete,
+  } = props
 
   // Use useMemo to calculate currentDate, startOfTheMonth, and totalDaysInMonth
   const { percentage, totalDaysInMonth } = useMemo(() => {
@@ -51,7 +66,7 @@ const DataWidget = (props: IDataWidgetProps) => {
 
   return (
     <motion.button
-      onClick={setIsComplete}
+      onClick={isCustom && !inputComplete ? () => {} : setIsComplete}
       className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
       whileHover={{ scale: 1.05 }} // Scale on hover
       transition={{ type: "spring", stiffness: 300 }}>
@@ -59,25 +74,42 @@ const DataWidget = (props: IDataWidgetProps) => {
         {/* Title  */}
         <div className="flex items-center flex-1 text-yellow-400">
           {icon}
-          <h5 className="ml-2">{title}</h5>
+          {isCustom && !inputComplete ? (
+            <input
+              className="mx-1 pl-2 border-[1px] border-black rounded-md"
+              type="text"
+              onChange={inputChange}
+              value={title}
+            />
+          ) : (
+            <h5 className="ml-2">{title}</h5>
+          )}
         </div>
-        {isComplete ? (
-          <motion.div
-            className="text-green-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}>
-            <SiCheckmarx />
-          </motion.div>
-        ) : (
-          <motion.div
-            className="text-red-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}>
-            <AiOutlineCloseCircle />
-          </motion.div>
-        )}
+        <div className="flex items-center">
+          {isCustom && (
+            <BsPencilSquare
+              onClick={isCustom ? setInputComplete : () => {}}
+              className={`${inputComplete ? "text-yellow-500" : "text-green-500"} mr-2 z-50`}
+            />
+          )}
+          {isComplete ? (
+            <motion.div
+              className="text-green-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}>
+              <SiCheckmarx />
+            </motion.div>
+          ) : (
+            <motion.div
+              className="text-red-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}>
+              <AiOutlineCloseCircle />
+            </motion.div>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-between items-center pt-6">
