@@ -27,7 +27,7 @@ const WeekCalendar = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={clsx(
-        "w-full text-white top-0 flex flex-col sticky py-2",
+        "w-full text-white top-0 flex z-50 flex-col sticky py-2",
         isCurrentWeek ? "bg-white" : "bg-white/50"
       )}>
       {/* Week Navigation */}

@@ -4,19 +4,20 @@ import { AiOutlineCloseCircle, AiOutlineFileDone } from "react-icons/ai"
 import { motion } from "framer-motion"
 import { BsPencilSquare } from "react-icons/bs"
 
+// Define the expected prop types for the DataWidget component
 interface IDataWidgetProps {
-  icon: React.ReactNode
-  title: string
-  isComplete: boolean
-  totalCompletions: number
-  setIsComplete: () => void
-  setInputComplete?: () => void
-  inputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  isCustom?: boolean
-  inputComplete?: boolean
+  icon: React.ReactNode // Icon to be displayed in the widget
+  title: string // Title or label for the widget
+  isComplete: boolean // Flag indicating whether the task is complete
+  totalCompletions: number // The number of completions for the task
+  setIsComplete: () => void // Function to toggle the completion state
+  setInputComplete?: () => void // Function to mark input as complete (optional)
+  inputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Input change handler (optional)
+  isCustom?: boolean // Flag indicating whether the widget is in custom mode (optional)
+  inputComplete?: boolean // Flag indicating whether input is complete (optional)
 }
 
-const DataWidget = (props: IDataWidgetProps) => {
+const DataWidget: React.FC<IDataWidgetProps> = (props) => {
   const {
     icon,
     setIsComplete,
@@ -29,7 +30,7 @@ const DataWidget = (props: IDataWidgetProps) => {
     inputComplete,
   } = props
 
-  // Use useMemo to calculate currentDate, startOfTheMonth, and totalDaysInMonth
+  // Memoized calculation of completion percentage and date-related information
   const { percentage, totalDaysInMonth } = useMemo(() => {
     const currentDate = new Date()
 
@@ -68,13 +69,15 @@ const DataWidget = (props: IDataWidgetProps) => {
     <motion.button
       onClick={isCustom && !inputComplete ? () => {} : setIsComplete}
       className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
-      whileHover={{ scale: 1.05 }} // Scale on hover
-      transition={{ type: "spring", stiffness: 300 }}>
+      whileHover={{ scale: 1.05 }} // Scale on hover for a more interactive UI
+      transition={{ type: "spring", stiffness: 300 }} // Smooth spring animation on hover
+    >
       <div className="flex items-center justify-between flex-auto">
-        {/* Title  */}
+        {/* Display the icon and title, with optional input for custom mode */}
         <div className="flex items-center flex-1 text-yellow-400">
           {icon}
           {isCustom && !inputComplete ? (
+            // If in custom mode and input is not complete, show an input field
             <input
               className="mx-1 pl-2 border-[1px] border-black rounded-md"
               type="text"
@@ -82,17 +85,21 @@ const DataWidget = (props: IDataWidgetProps) => {
               value={title}
             />
           ) : (
+            // Otherwise, display the title as text
             <h5 className="ml-2">{title}</h5>
           )}
         </div>
         <div className="flex items-center">
+          {/* Show edit icon for custom mode */}
           {isCustom && (
             <BsPencilSquare
               onClick={isCustom ? setInputComplete : () => {}}
               className={`${inputComplete ? "text-yellow-500" : "text-green-500"} mr-2 z-50`}
             />
           )}
+          {/* Display completion status icon */}
           {isComplete ? (
+            // If complete, show checkmark icon
             <motion.div
               className="text-green-500"
               initial={{ opacity: 0 }}
@@ -101,6 +108,7 @@ const DataWidget = (props: IDataWidgetProps) => {
               <SiCheckmarx />
             </motion.div>
           ) : (
+            // If incomplete, show close circle icon
             <motion.div
               className="text-red-400"
               initial={{ opacity: 0 }}
@@ -113,6 +121,7 @@ const DataWidget = (props: IDataWidgetProps) => {
       </div>
 
       <div className="flex justify-between items-center pt-6">
+        {/* Display the completion percentage */}
         <motion.h5
           className="text-green-500 flex text-xl"
           initial={{ opacity: 0 }}
@@ -120,6 +129,7 @@ const DataWidget = (props: IDataWidgetProps) => {
           transition={{ duration: 0.5 }}>
           {percentage.toFixed(2)}%
         </motion.h5>
+        {/* Display the current and total number of days in the month */}
         <p className="flex text-xs items-center">
           {totalCompletions} / {totalDaysInMonth}
         </p>
@@ -127,5 +137,8 @@ const DataWidget = (props: IDataWidgetProps) => {
     </motion.button>
   )
 }
+
+// Add displayName for better debugging and React DevTools integration
+DataWidget.displayName = "DataWidget"
 
 export default DataWidget

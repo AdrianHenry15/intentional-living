@@ -14,7 +14,7 @@ export default function BottomNavbar() {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="fixed bottom-0 sm:bottom-4 left-0 right-0 mx-auto w-full sm:max-w-lg bg-white shadow-lg p-4 sm:rounded-full flex justify-around items-center pb-10 sm:p-4">
+      className="fixed bottom-0 sm:bottom-4 left-0 right-0 mx-auto w-full z-50 sm:max-w-lg bg-white shadow-lg p-4 sm:rounded-full flex justify-around items-center pb-10 sm:p-4">
       {navItems.map(({ title, link, icon: Icon }) => (
         <Link
           key={title}
