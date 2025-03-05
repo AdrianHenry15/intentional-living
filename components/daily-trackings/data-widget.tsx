@@ -1,91 +1,98 @@
-// DataWidget.tsx
-import React from "react"
-import { FaChevronRight, FaCheck, FaEdit } from "react-icons/fa"
+import React, { useMemo } from "react"
+import { SiCheckmarx } from "react-icons/si"
+import { AiOutlineCloseCircle } from "react-icons/ai"
 import { motion } from "framer-motion"
-import { useDailyTrackingStore } from "@/store/use-daily-tracking-store"
 
 interface IDataWidgetProps {
-  id: number
-  title: string
   icon: React.ReactNode
-  completed_days: number
-  isCustom?: boolean
-  onEdit?: (newTitle: string) => void
+  title: string
+  isComplete: boolean
+  totalCompletions: number
+  setIsComplete: () => void
 }
 
-const DataWidget: React.FC<IDataWidgetProps> = ({
-  id,
-  title,
-  completed_days,
-  icon,
-  isCustom,
-  onEdit,
-}) => {
-  const [editing, setEditing] = React.useState(false)
-  const [customTitle, setCustomTitle] = React.useState(title)
+const DataWidget = (props: IDataWidgetProps) => {
+  const { icon, setIsComplete, title, isComplete, totalCompletions } = props
 
-  const handleEdit = () => {
-    if (editing && onEdit) {
-      onEdit(customTitle)
+  // Use useMemo to calculate currentDate, startOfTheMonth, and totalDaysInMonth
+  const { percentage, totalDaysInMonth } = useMemo(() => {
+    const currentDate = new Date()
+
+    // Calculate the start of the current month
+    const startOfTheMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    )
+
+    // Get the current day of the month
+    const currentDayOfTheMonth = currentDate.getDate()
+
+    // Get the total number of days in the current month
+    const totalDaysInMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    ).getDate()
+
+    // Calculate the completion percentage for the month based on current day of the month
+    const percentage =
+      currentDayOfTheMonth === 0
+        ? 0
+        : (totalCompletions / currentDayOfTheMonth) * 100
+
+    return {
+      startOfTheMonth,
+      currentDayOfTheMonth,
+      totalDaysInMonth,
+      percentage,
     }
-    setEditing(!editing)
-  }
-
-  const percentage = Math.round((completed_days / 30) * 100)
+  }, [totalCompletions]) // Recalculate only if `totalCompletions` changes
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.05, boxShadow: "0px 8px 16px rgba(0,0,0,0.15)" }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="flex flex-col p-6 rounded-2xl shadow-lg bg-gradient-to-br from-gray-800 to-gray-600 w-full max-w-xs text-white">
-      {/* Top Section */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <motion.div
-            whileHover={{ rotate: 10 }}
-            transition={{ duration: 0.3 }}
-            className="text-3xl text-yellow-400">
-            {icon}
-          </motion.div>
-
-          {editing ? (
-            <input
-              type="text"
-              value={customTitle}
-              onChange={(e) => setCustomTitle(e.target.value)}
-              className="bg-transparent border-b border-gray-400 text-sm text-gray-200 outline-none"
-              autoFocus
-            />
-          ) : (
-            <h5 className="text-sm font-medium text-gray-200">{customTitle}</h5>
-          )}
+    <motion.button
+      onClick={setIsComplete}
+      className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
+      whileHover={{ scale: 1.05 }} // Scale on hover
+      transition={{ type: "spring", stiffness: 300 }}>
+      <div className="flex items-center justify-between flex-auto">
+        {/* Title  */}
+        <div className="flex items-center flex-1 text-yellow-400">
+          {icon}
+          <h5 className="ml-2">{title}</h5>
         </div>
-
-        {isCustom && (
-          <button
-            onClick={handleEdit}
-            className="text-gray-400 hover:text-white transition">
-            {editing ? <FaCheck /> : <FaEdit />}
-          </button>
+        {isComplete ? (
+          <motion.div
+            className="text-green-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}>
+            <SiCheckmarx />
+          </motion.div>
+        ) : (
+          <motion.div
+            className="text-red-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}>
+            <AiOutlineCloseCircle />
+          </motion.div>
         )}
       </div>
 
-      {/* Progress Section */}
-      <div className="flex items-center justify-between mt-4">
-        <span className="text-2xl font-bold text-green-400">{percentage}%</span>
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            // checked={completed_days >= 30}
-            // onChange={() => markGoalComplete(id)}
-            className="w-5 h-5 text-green-400 bg-gray-700 rounded focus:ring-green-500 focus:ring-2"
-          />
-          <span className="text-sm text-gray-300">Complete</span>
-        </label>
+      <div className="flex justify-between items-center pt-6">
+        <motion.h5
+          className="text-green-500 flex text-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}>
+          {percentage.toFixed(2)}%
+        </motion.h5>
+        <p className="flex text-xs items-center">
+          {totalCompletions} / {totalDaysInMonth}
+        </p>
       </div>
-    </motion.div>
+    </motion.button>
   )
 }
 

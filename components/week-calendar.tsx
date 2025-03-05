@@ -27,10 +27,8 @@ const WeekCalendar = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={clsx(
-        "w-full text-white shadow-lg top-0 flex flex-col sticky py-2",
-        isCurrentWeek
-          ? "bg-gradient-to-b from-white to-yellow-400"
-          : "bg-gradient-to-b from-white/50 to-yellow-400"
+        "w-full text-white top-0 flex flex-col sticky py-2",
+        isCurrentWeek ? "bg-white" : "bg-white/50"
       )}>
       {/* Week Navigation */}
       <div className="flex justify-between py-1 px-2 text-sm mb-2 text-black">
@@ -90,10 +88,8 @@ const WeekCalendar = () => {
               <span className="font-bold transition">{day.day}</span>
               <motion.div
                 className={clsx(
-                  "w-8 h-8 flex items-center justify-center rounded-full text-white",
-                  isCurrentDay
-                    ? "bg-yellow-700 text-black font-bold"
-                    : "bg-black"
+                  "w-8 h-8 flex items-center justify-center rounded-full text-black",
+                  isCurrentDay ? "border-[1px] border-yellow-400" : ""
                 )}
                 layout
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}>

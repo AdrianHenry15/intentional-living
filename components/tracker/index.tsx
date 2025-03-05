@@ -1,23 +1,27 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { motion } from "framer-motion"
-import { FaCandyCane, FaCookie } from "react-icons/fa6"
-import { MdFitnessCenter } from "react-icons/md"
-import { FaBrain } from "react-icons/fa"
+import { TbCandy } from "react-icons/tb"
+import { FaBrain, FaCookieBite, FaRunning } from "react-icons/fa"
 import DataWidget from "../daily-trackings/data-widget"
+import { SiBraintree } from "react-icons/si"
 
 const Tracker = () => {
+  const [dietCheck, setDietCheck] = useState(false)
+  const [exerciseCheck, setExerciseCheck] = useState(false)
+  const [sugarCheck, setSugarCheck] = useState(false)
+  const [mentalCheck, setMentalCheck] = useState(false)
   return (
-    <div className="flex flex-col p-4 bg-gradient-to-b from-yellow-400 to-black min-h-screen w-full text-black">
+    <div className="flex flex-col p-4 bg-gradient-to-b from-white to-yellow-400 min-h-screen w-full text-black">
       {/* Welcome Message */}
-      {/* <motion.h5
-        className="text-6xl p-6 text-start"
+      <motion.h5
+        className="text-3xl p-6 text-start"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}>
-        {`Your Tracker`}
-      </motion.h5> */}
+        {`Home`}
+      </motion.h5>
 
       {/* Data Widgets - Centered Grid */}
       <motion.div
@@ -26,28 +30,32 @@ const Tracker = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}>
         <DataWidget
-          id={0}
-          icon={<FaCookie size={22} />}
+          icon={<FaCookieBite />}
           title="Diet"
-          completed_days={0}
+          isComplete={dietCheck}
+          setIsComplete={() => setDietCheck(!dietCheck)}
+          totalCompletions={5}
         />
         <DataWidget
-          id={1}
-          icon={<MdFitnessCenter size={22} />}
+          icon={<FaRunning />}
           title="Exercise"
-          completed_days={0}
+          isComplete={exerciseCheck}
+          setIsComplete={() => setExerciseCheck(!exerciseCheck)}
+          totalCompletions={5}
         />
         <DataWidget
-          id={2}
-          icon={<FaCandyCane size={22} />}
+          icon={<TbCandy />}
           title="Sugar Intake"
-          completed_days={0}
+          isComplete={sugarCheck}
+          setIsComplete={() => setSugarCheck(!sugarCheck)}
+          totalCompletions={5}
         />
         <DataWidget
-          id={3}
-          icon={<FaBrain size={22} />}
-          title="Mental Strength"
-          completed_days={0}
+          icon={<FaBrain />}
+          title="Mental Strengthening"
+          isComplete={mentalCheck}
+          setIsComplete={() => setMentalCheck(!mentalCheck)}
+          totalCompletions={5}
         />
       </motion.div>
     </div>
