@@ -1,12 +1,14 @@
-"use client"
-
-import { useUser } from "@clerk/nextjs"
 import Hero from "../../components/hero"
 import HomePage from "@/components/home-page"
+import { getAllCoinTransactions } from "@/sanity/lib/coin-transactions/getAll"
+import { auth } from "@clerk/nextjs/server"
 
-export default function Home() {
-  const { isSignedIn } = useUser()
+export default async function Home() {
+  const user = await auth()
+  const coin_transactions = await getAllCoinTransactions()
   return (
-    <main className="bg-inherit">{!isSignedIn ? <Hero /> : <HomePage />}</main>
+    <main className="bg-inherit">
+      {!user ? <Hero /> : <HomePage coin_transactions={coin_transactions} />}
+    </main>
   )
 }

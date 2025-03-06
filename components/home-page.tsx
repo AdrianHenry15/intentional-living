@@ -12,6 +12,7 @@ import {
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useUser } from "@clerk/nextjs"
+import { ALL_COIN_TRANSACTIONSResult } from "@/sanity.types"
 
 const stats = [
   { name: "Jan", value: 30 },
@@ -32,8 +33,22 @@ const userData = {
   },
 }
 
-const HomePage = () => {
+interface IHomePageProps {
+  coin_transactions: ALL_COIN_TRANSACTIONSResult
+}
+
+const HomePage = (props: IHomePageProps) => {
   const { user } = useUser()
+  const { coin_transactions } = props
+
+  // Calculate the total sum of coin transactions
+  const totalCoinTransactionAmount = coin_transactions.reduce(
+    (sum, transaction) => {
+      // Assuming each transaction has an "amount" field
+      return sum + transaction.amount!
+    },
+    0
+  )
 
   return (
     <div className="p-6 space-y-8">
@@ -74,7 +89,11 @@ const HomePage = () => {
         {[
           { title: "Life Rating", value: "100%" },
           { title: "Streak", value: "90 Days" },
-          { title: "Coin Transactions", value: "120" },
+          // Update the Coin Transactions stat with the calculated total amount
+          {
+            title: "Coin Transactions",
+            value: `$${totalCoinTransactionAmount.toFixed(2)}`,
+          },
         ].map((stat, index) => (
           <motion.div
             key={stat.title}
