@@ -29,7 +29,7 @@ const userData = {
     diet: "Healthy",
     exercise: "Consistent",
     sugarIntake: "Low",
-    mentalStrengthening: "Meditation",
+    mentalStrength: "Consistent",
   },
 }
 
@@ -155,7 +155,7 @@ const HomePage = (props: IHomePageProps) => {
                   <span className="font-semibold capitalize">
                     {key.replace(/([A-Z])/g, " $1")}:{" "}
                   </span>
-                  <span className="text-gray-700">{value}</span>
+                  <span className="text-green-500">{value}</span>
                 </div>
               ))}
             </CardContent>
