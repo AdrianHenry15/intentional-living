@@ -17,11 +17,11 @@ export const getNavItems = () => [
     link: `/`,
     icon: Home,
   },
-  {
-    title: "Referral",
-    link: `/auth/referrals`,
-    icon: ReceiptIcon,
-  },
+  // {
+  //   title: "Referral",
+  //   link: `/auth/referrals`,
+  //   icon: ReceiptIcon,
+  // },
   {
     title: "Profile",
     link: "/auth/profile",

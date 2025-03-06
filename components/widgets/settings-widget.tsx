@@ -57,7 +57,7 @@ export default function SettingsWidget() {
     <>
       {/* Floating Button to Open Modal */}
       <button
-        className="fixed bottom-24 right-2 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-500/75 transition flex items-center justify-center"
+        className="fixed bottom-6 right-6 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-500/75 transition flex items-center justify-center"
         onClick={() => setIsOpen(true)}>
         <ChevronUpIcon className="h-6 w-6" />
       </button>

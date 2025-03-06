@@ -10,7 +10,6 @@ import {
   TransitionChild,
 } from "@headlessui/react"
 import { Fragment } from "react"
-import { FaPhone } from "react-icons/fa"
 import { MdPhoneIphone } from "react-icons/md"
 
 export default function PushNotificationManager() {

@@ -5,9 +5,10 @@ import { usePathname, useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import WeekCalendar from "@/components/week-calendar"
 import BottomNavbar from "@/components/navbar/bottom-navbar"
-import SettingsWidget from "@/components/settings-widget"
+import SettingsWidget from "@/components/widgets/settings-widget"
 import { checkDailyRating } from "@/lib/utils/check-daily-rating"
 import FooterSpace from "@/components/footer-spacer"
+import QuickNoteWidget from "@/components/widgets/quick-note-widget"
 
 export default function RootLayout({
   children,
@@ -54,6 +55,7 @@ export default function RootLayout({
       {shouldShowCalendar && <WeekCalendar />}
       {children}
       <SettingsWidget />
+      <QuickNoteWidget />
       <FooterSpace />
       <BottomNavbar />
     </main>
