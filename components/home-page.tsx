@@ -12,7 +12,7 @@ import {
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useUser } from "@clerk/nextjs"
-import { ALL_COIN_TRANSACTIONSResult } from "@/sanity.types"
+import { ALL_COIN_TRANSACTIONSResult, User } from "@/sanity.types"
 
 const stats = [
   { name: "Jan", value: 30 },
@@ -35,11 +35,14 @@ const userData = {
 
 interface IHomePageProps {
   coin_transactions: ALL_COIN_TRANSACTIONSResult
+  user_data: User
 }
 
 const HomePage = (props: IHomePageProps) => {
   const { user } = useUser()
-  const { coin_transactions } = props
+  const { coin_transactions, user_data } = props
+
+  const streak = user_data ? user_data.streak_count : "Streak Not Available"
 
   // Calculate the total sum of coin transactions
   const totalCoinTransactionAmount = coin_transactions.reduce(
@@ -88,7 +91,7 @@ const HomePage = (props: IHomePageProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
           { title: "Life Rating", value: "100%" },
-          { title: "Streak", value: "90 Days" },
+          { title: "Streak", value: streak },
           // Update the Coin Transactions stat with the calculated total amount
           {
             title: "Coin Transactions",
