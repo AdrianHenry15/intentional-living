@@ -42,3 +42,21 @@ export function CardContent({
 }) {
   return <div className={cn("space-y-4", className)}>{children}</div>
 }
+
+export function CardTitle({
+  className,
+  children,
+}: {
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <h2
+      className={cn(
+        "text-lg font-bold text-gray-900 dark:text-gray-100",
+        className
+      )}>
+      {children}
+    </h2>
+  )
+}

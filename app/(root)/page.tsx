@@ -2,9 +2,11 @@
 
 import { useUser } from "@clerk/nextjs"
 import Hero from "../../components/hero"
-import HomePageTracker from "@/components/tracker/daily-homepage-tracker"
+import HomePage from "@/components/home-page"
 
 export default function Home() {
   const { isSignedIn } = useUser()
-  return <main>{!isSignedIn ? <Hero /> : <HomePageTracker />}</main>
+  return (
+    <main className="bg-inherit">{!isSignedIn ? <Hero /> : <HomePage />}</main>
+  )
 }

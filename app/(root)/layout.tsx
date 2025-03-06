@@ -7,6 +7,7 @@ import WeekCalendar from "@/components/week-calendar"
 import BottomNavbar from "@/components/navbar/bottom-navbar"
 import SettingsWidget from "@/components/settings-widget"
 import { checkDailyRating } from "@/lib/utils/check-daily-rating"
+import FooterSpace from "@/components/footer-spacer"
 
 export default function RootLayout({
   children,
@@ -53,6 +54,7 @@ export default function RootLayout({
       {shouldShowCalendar && <WeekCalendar />}
       {children}
       <SettingsWidget />
+      <FooterSpace />
       <BottomNavbar />
     </main>
   )
