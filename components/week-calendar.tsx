@@ -5,6 +5,8 @@ import clsx from "clsx"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion } from "framer-motion"
 import { useCalendarStore } from "@/store/use-calendar-store"
+import Image from "next/image"
+import Logo from "@/public/assets/il-logo.png"
 
 const WeekCalendar = () => {
   const {
@@ -30,6 +32,9 @@ const WeekCalendar = () => {
         "w-full text-white top-0 flex z-50 flex-col sticky py-2",
         isCurrentWeek ? "bg-white" : "bg-white/50"
       )}>
+      <span className="flex items-center justify-center flex-1">
+        <Image className="w-24" src={Logo} alt="logo" />
+      </span>
       {/* Week Navigation */}
       <div className="flex justify-between py-1 px-2 text-sm mb-2 text-black">
         <button
