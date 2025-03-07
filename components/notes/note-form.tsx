@@ -10,8 +10,7 @@ interface INoteFormProps {
 
 export default function NoteForm(props: INoteFormProps) {
   const { id } = props
-  const { notes, addNote, updateNote } = useNoteStore()
-  const [noteText, setNoteText] = useState("")
+  const { notes, addNote, updateNote, noteText, setNoteText } = useNoteStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function NoteForm(props: INoteFormProps) {
         setNoteText(note.text)
       }
     }
-  }, [id, notes])
+  }, [id, notes, setNoteText])
 
   const handleSubmit = () => {
     if (noteText.trim() !== "") {

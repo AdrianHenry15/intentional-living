@@ -6,8 +6,7 @@ import { useNoteStore } from "@/store/use-note-store"
 import { useRouter } from "next/navigation"
 
 export default function CreateNotePage() {
-  const [noteText, setNoteText] = useState("")
-  const { addNote } = useNoteStore()
+  const { addNote, noteText, setNoteText } = useNoteStore()
   const router = useRouter()
 
   const handleSave = () => {

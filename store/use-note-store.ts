@@ -8,6 +8,8 @@ interface Note {
 
 interface NoteStore {
   notes: Note[]
+  noteText: string
+  setNoteText: (text: string) => void
   addNote: (text: string) => void
   updateNote: (id: string, text: string) => void
   deleteNote: (id: string) => void
@@ -15,6 +17,8 @@ interface NoteStore {
 
 export const useNoteStore = create<NoteStore>((set) => ({
   notes: [],
+  noteText: "", // State for the note input text
+  setNoteText: (text) => set({ noteText: text }), // Set the input text
   addNote: (text) =>
     set((state) => ({
       notes: [
