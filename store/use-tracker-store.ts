@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 
 type TrackerState = {
   dietCheck: boolean
@@ -11,14 +12,22 @@ type TrackerState = {
   toggleMental: () => void
 }
 
-export const useTrackerStore = create<TrackerState>((set) => ({
-  dietCheck: false,
-  exerciseCheck: false,
-  sugarCheck: false,
-  mentalCheck: false,
-  toggleDiet: () => set((state) => ({ dietCheck: !state.dietCheck })),
-  toggleExercise: () =>
-    set((state) => ({ exerciseCheck: !state.exerciseCheck })),
-  toggleSugar: () => set((state) => ({ sugarCheck: !state.sugarCheck })),
-  toggleMental: () => set((state) => ({ mentalCheck: !state.mentalCheck })),
-}))
+export const useTrackerStore = create<TrackerState>()(
+  persist(
+    (set) => ({
+      dietCheck: false,
+      exerciseCheck: false,
+      sugarCheck: false,
+      mentalCheck: false,
+      toggleDiet: () => set((state) => ({ dietCheck: !state.dietCheck })),
+      toggleExercise: () =>
+        set((state) => ({ exerciseCheck: !state.exerciseCheck })),
+      toggleSugar: () => set((state) => ({ sugarCheck: !state.sugarCheck })),
+      toggleMental: () => set((state) => ({ mentalCheck: !state.mentalCheck })),
+    }),
+    {
+      name: "tracker-store", // Key for localStorage or sessionStorage
+      storage: createJSONStorage(() => sessionStorage), // Persist data in localStorage
+    }
+  )
+)

@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 
 type CustomGoal = {
   id: number
@@ -15,34 +16,44 @@ type CustomGoalState = {
   deleteGoal: (id: number) => void
 }
 
-export const useCustomGoalStore = create<CustomGoalState>((set) => ({
-  goals: [],
-  addGoal: (name) =>
-    set((state) => ({
-      goals: [
-        ...state.goals,
-        {
-          id: state.goals.length + 1,
-          name,
-          isComplete: false,
-          inputComplete: false,
-        },
-      ],
-    })),
-  toggleComplete: (id) =>
-    set((state) => ({
-      goals: state.goals.map((goal) =>
-        goal.id === id ? { ...goal, isComplete: !goal.isComplete } : goal
-      ),
-    })),
-  toggleInputComplete: (id) =>
-    set((state) => ({
-      goals: state.goals.map((goal) =>
-        goal.id === id ? { ...goal, inputComplete: !goal.inputComplete } : goal
-      ),
-    })),
-  deleteGoal: (id) =>
-    set((state) => ({
-      goals: state.goals.filter((goal) => goal.id !== id),
-    })),
-}))
+export const useCustomGoalStore = create<CustomGoalState>()(
+  persist(
+    (set) => ({
+      goals: [],
+      addGoal: (name) =>
+        set((state) => ({
+          goals: [
+            ...state.goals,
+            {
+              id: state.goals.length + 1,
+              name,
+              isComplete: false,
+              inputComplete: false,
+            },
+          ],
+        })),
+      toggleComplete: (id) =>
+        set((state) => ({
+          goals: state.goals.map((goal) =>
+            goal.id === id ? { ...goal, isComplete: !goal.isComplete } : goal
+          ),
+        })),
+      toggleInputComplete: (id) =>
+        set((state) => ({
+          goals: state.goals.map((goal) =>
+            goal.id === id
+              ? { ...goal, inputComplete: !goal.inputComplete }
+              : goal
+          ),
+        })),
+      deleteGoal: (id) =>
+        set((state) => ({
+          goals: state.goals.filter((goal) => goal.id !== id),
+        })),
+    }),
+    {
+      name: "custom-goal-store", // Key for localStorage
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
