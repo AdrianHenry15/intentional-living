@@ -1,34 +1,30 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import { TbCandy } from "react-icons/tb"
-import { FaBrain, FaCookieBite, FaPlus, FaRunning } from "react-icons/fa"
-import DataWidget from "../daily-trackings/data-widget"
+import { FaBrain, FaCookieBite, FaRunning } from "react-icons/fa"
 import { SiCustomink } from "react-icons/si"
+import DataWidget from "../daily-trackings/data-widget"
+import CustomGoalItem from "./custom-goal-item"
+import { Button } from "../button"
+import { useTrackerStore } from "@/store/use-tracker-store"
+import { useCustomGoalStore } from "@/store/use-custom-goal-store"
 
 const Tracker = () => {
-  const [dietCheck, setDietCheck] = useState(false)
-  const [exerciseCheck, setExerciseCheck] = useState(false)
-  const [sugarCheck, setSugarCheck] = useState(false)
-  const [mentalCheck, setMentalCheck] = useState(false)
-  const [customCheck1, setCustomCheck1] = useState(false)
-  const [customCheck2, setCustomCheck2] = useState(false)
-  const [customGoalOpen1, setCustomGoalOpen1] = useState(false)
-  const [customGoalOpen2, setCustomGoalOpen2] = useState(false)
-  const [customGoalName1, setCustomGoalName1] = useState("")
-  const [customGoalInputComplete1, setCustomGoalInputComplete1] =
-    useState(false)
-  const [customGoalInputComplete2, setCustomGoalInputComplete2] =
-    useState(false)
-  const [customGoalName2, setCustomGoalName2] = useState("")
+  const {
+    dietCheck,
+    exerciseCheck,
+    sugarCheck,
+    mentalCheck,
+    toggleDiet,
+    toggleExercise,
+    toggleSugar,
+    toggleMental,
+  } = useTrackerStore()
 
-  const handleCustomInput1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomGoalName1(e.target.value)
-  }
-  const handleCustomInput2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomGoalName2(e.target.value)
-  }
+  const { goals, addGoal, toggleComplete, toggleInputComplete, deleteGoal } =
+    useCustomGoalStore()
 
   return (
     <div className="flex flex-col px-4 bg-gradient-to-b from-white to-yellow-400 min-h-screen w-full text-black">
@@ -51,92 +47,60 @@ const Tracker = () => {
           icon={<FaCookieBite />}
           title="Diet"
           isComplete={dietCheck}
-          setIsComplete={() => setDietCheck(!dietCheck)}
+          setIsComplete={toggleDiet}
           totalCompletions={5}
         />
         <DataWidget
           icon={<FaRunning />}
           title="Exercise"
           isComplete={exerciseCheck}
-          setIsComplete={() => setExerciseCheck(!exerciseCheck)}
+          setIsComplete={toggleExercise}
           totalCompletions={5}
         />
         <DataWidget
           icon={<TbCandy />}
           title="Sugar Intake"
           isComplete={sugarCheck}
-          setIsComplete={() => setSugarCheck(!sugarCheck)}
+          setIsComplete={toggleSugar}
           totalCompletions={5}
         />
         <DataWidget
           icon={<FaBrain />}
           title="Mental Strengthening"
           isComplete={mentalCheck}
-          setIsComplete={() => setMentalCheck(!mentalCheck)}
+          setIsComplete={toggleMental}
           totalCompletions={5}
         />
 
-        {/* Render Custom Goal 1 Widget */}
-        {customGoalOpen1 && (
+        {/* Render Custom Goals */}
+        {goals.map((goal) => (
           <DataWidget
+            key={goal.id}
+            deleteGoal={() => deleteGoal(goal.id)}
             icon={<SiCustomink />}
-            title={customGoalName1}
-            isComplete={customCheck1}
-            setIsComplete={() => setCustomCheck1(!customCheck1)}
+            title={goal.name}
+            isComplete={goal.isComplete}
+            setIsComplete={() => toggleComplete(goal.id)}
             totalCompletions={5}
             isCustom
-            inputChange={handleCustomInput1}
-            inputComplete={customGoalInputComplete1}
-            setInputComplete={() =>
-              setCustomGoalInputComplete1(!customGoalInputComplete1)
-            }
+            inputChange={(e) => {}}
+            inputComplete={goal.inputComplete}
+            setInputComplete={() => toggleInputComplete(goal.id)}
           />
-        )}
+        ))}
 
-        {/* Render Custom Goal 2 Widget */}
-        {customGoalOpen2 && (
-          <DataWidget
-            icon={<SiCustomink />}
-            title={customGoalName2}
-            isComplete={customCheck2}
-            setIsComplete={() => setCustomCheck2(!customCheck2)}
-            totalCompletions={5}
-            isCustom
-            inputChange={handleCustomInput2}
-            inputComplete={customGoalInputComplete2}
-            setInputComplete={() =>
-              setCustomGoalInputComplete2(!customGoalInputComplete2)
-            }
+        {/* Custom Goal Add Button */}
+        {goals.length < 2 && (
+          <CustomGoalItem
+            title="Create a custom goal..."
+            setCustomGoal={() => addGoal(`Custom Goal ${goals.length + 1}`)}
           />
-        )}
-        {/* Custom Goal 1 */}
-        {!customGoalOpen1 && (
-          <button
-            onClick={() => setCustomGoalOpen1(true)}
-            className="flex z-50 flex-col text-black items-center justify-center w-[300px] border-[1px] border-black py-2 rounded-lg">
-            <div className="bg-white rounded-full p-4">
-              <FaPlus size={25} />
-            </div>
-            <p className="text-xs whitespace-nowrap pt-4 pb-2 text-yellow-800">
-              Create a custom goal 1...
-            </p>
-          </button>
-        )}
-
-        {/* Custom Goal 2 */}
-        {!customGoalOpen2 && customGoalOpen1 && (
-          <button
-            onClick={() => setCustomGoalOpen2(true)}
-            className="flex z-50 flex-col text-black items-center justify-center w-[300px] border-[1px] border-black py-2 rounded-lg">
-            <div className="bg-white rounded-full p-4">
-              <FaPlus size={25} />
-            </div>
-            <p className="text-xs whitespace-nowrap pt-4 pb-2 text-yellow-800">
-              Create a custom goal 2...
-            </p>
-          </button>
         )}
       </motion.div>
+
+      <Button className="mt-10 w-[300px] self-center flex items-center justify-center">
+        Save
+      </Button>
     </div>
   )
 }

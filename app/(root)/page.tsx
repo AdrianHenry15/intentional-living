@@ -10,7 +10,7 @@ export default async function Home() {
   const user_data = await getUserById(user.userId!)
   return (
     <main className="bg-inherit">
-      {!user ? (
+      {!user.sessionId ? (
         <Hero />
       ) : (
         <HomePage user_data={user_data} coin_transactions={coin_transactions} />

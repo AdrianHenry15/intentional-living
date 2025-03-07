@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { SiCheckmarx } from "react-icons/si"
-import { AiOutlineCloseCircle, AiOutlineFileDone } from "react-icons/ai"
+import { AiOutlineCloseCircle } from "react-icons/ai"
 import { motion } from "framer-motion"
 import { BsPencilSquare } from "react-icons/bs"
 
@@ -11,6 +11,7 @@ interface IDataWidgetProps {
   isComplete: boolean // Flag indicating whether the task is complete
   totalCompletions: number // The number of completions for the task
   setIsComplete: () => void // Function to toggle the completion state
+  deleteGoal?: () => void // Function to toggle the completion state
   setInputComplete?: () => void // Function to mark input as complete (optional)
   inputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Input change handler (optional)
   isCustom?: boolean // Flag indicating whether the widget is in custom mode (optional)
@@ -23,6 +24,7 @@ const DataWidget: React.FC<IDataWidgetProps> = (props) => {
     setIsComplete,
     inputChange,
     setInputComplete,
+    deleteGoal,
     isCustom,
     title,
     isComplete,
@@ -94,7 +96,7 @@ const DataWidget: React.FC<IDataWidgetProps> = (props) => {
           {isCustom && (
             <BsPencilSquare
               onClick={isCustom ? setInputComplete : () => {}}
-              className={`${inputComplete ? "text-yellow-500" : "text-green-500"} mr-2 z-50`}
+              className={`${inputComplete ? "text-yellow-500" : "text-green-500"} mr-2 z-50 animate-pulse`}
             />
           )}
           {/* Display completion status icon */}
@@ -114,10 +116,17 @@ const DataWidget: React.FC<IDataWidgetProps> = (props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}>
-              <AiOutlineCloseCircle />
+              <SiCheckmarx />
             </motion.div>
           )}
         </div>
+        {/* Show edit icon for custom mode */}
+        {isCustom && (
+          <AiOutlineCloseCircle
+            onClick={deleteGoal}
+            className={`text-red-500 ml-2 z-50`}
+          />
+        )}
       </div>
 
       <div className="flex justify-between items-center pt-6">
