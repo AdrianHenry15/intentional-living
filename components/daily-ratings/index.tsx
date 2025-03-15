@@ -7,6 +7,7 @@ import Question from "./question"
 import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
+import { Button } from "../button"
 
 const DailyRatings = () => {
   const { user } = useUser()
@@ -138,12 +139,13 @@ const DailyRatings = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 1 } }}>
           <h2 className="text-2xl font-bold text-center">
-            DailyRatings Completed!
+            Daily Ratings Completed!
           </h2>
           <p className="text-center mt-4 text-lg font-medium">
             Thank you for completing the life tracker. Your responses have been
             recorded.
           </p>
+          <Button title="Go Home" />
         </motion.div>
       )}
     </motion.div>

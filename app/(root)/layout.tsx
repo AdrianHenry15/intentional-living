@@ -29,7 +29,13 @@ export default function RootLayout({
   }, [isSignedIn, user, router])
 
   // Define base routes where the calendar should be hidden
-  const hiddenRoutes = ["/auth/notes", "/auth/referral", "/auth/profile"]
+  const hiddenRoutes = [
+    "/auth/notes",
+    "/auth/referral",
+    "/auth/profile",
+    "/auth/settings",
+    "/auth/daily-ratings",
+  ]
   const shouldShowCalendar =
     isSignedIn && !hiddenRoutes.some((route) => pathname.startsWith(route))
 
