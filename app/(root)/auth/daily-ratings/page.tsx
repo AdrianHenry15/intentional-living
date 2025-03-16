@@ -11,10 +11,10 @@ export default async function DailyRatingsPage() {
   }
 
   // Check if the user has already submitted their daily ratings
-  // const hasSubmitted = await checkDailyRating(userId)
-  // if (hasSubmitted) {
-  //   redirect("/") // Redirect to home or another page if already submitted
-  // }
+  const hasSubmitted = await checkDailyRating()
+  if (hasSubmitted) {
+    redirect("/") // Redirect to home or another page if already submitted
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden px-6 md:px-0">

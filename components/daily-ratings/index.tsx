@@ -7,6 +7,7 @@ import Question from "./question"
 import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
+import { Button } from "../button"
 
 const DailyRatings = () => {
   const { user } = useUser()
@@ -58,16 +59,12 @@ const DailyRatings = () => {
 
     setIsSubmitting(true)
     try {
-      await axios.post("http://localhost:3000/api/daily-ratings", {
+      await axios.post("/api/daily-ratings", {
         user_id: userId,
         date: new Date().toISOString(),
-        question_1_rating: ratings[0] || 1,
-        question_2_rating: ratings[1] || 1,
-        question_3_rating: ratings[2] || 1,
-        question_4_rating: ratings[3] || 1,
-        question_5_rating: ratings[4] || 1,
-        question_6_rating: ratings[5] || 1,
+        ratings: ratings
       })
+      console.log("error here");
       alert("Your ratings have been submitted!")
     } catch (error) {
       console.error("Failed to submit ratings:", error)
@@ -89,7 +86,7 @@ const DailyRatings = () => {
       transition={{ duration: 0.5, ease: "easeInOut" }}>
       <Progress current={currentQuestion + 1} total={questions.length} />
 
-      {currentQuestion < questions.length ? (
+      {currentQuestion < questions.length-1 ? (
         <motion.div
           key={currentQuestion}
           initial={{ opacity: 0, x: -50 }}
@@ -138,12 +135,13 @@ const DailyRatings = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 1 } }}>
           <h2 className="text-2xl font-bold text-center">
-            DailyRatings Completed!
+            Daily Ratings Completed!
           </h2>
           <p className="text-center mt-4 text-lg font-medium">
             Thank you for completing the life tracker. Your responses have been
             recorded.
           </p>
+          <Button title="Go Home" />
         </motion.div>
       )}
     </motion.div>
