@@ -1,33 +1,24 @@
 import { getBaseUrl } from "@/lib/utils/get-base-url"
-import { DailyRatings } from "@/sanity.types"
+import { auth } from "@clerk/nextjs/server"
 
-export const checkDailyRating = async (userId: string) => {
+export const checkDailyRating = async () => {
   try {
     const baseUrl = getBaseUrl()
+    const { getToken } = await auth();
+    const token = await getToken();
     const response = await fetch(`${baseUrl}/api/daily-ratings`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`Failed to fetch daily ratings: ${errorText}`)
-    }
+    const {hasSubmitted} = await response.json()
 
-    const allRatings = await response.json()
+    return hasSubmitted;
 
-    // Get today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split("T")[0]
-
-    // Check if the user has already submitted a rating for today
-    return allRatings.some(
-      (rating: DailyRatings) =>
-        rating.user_id?._ref === userId && rating.date!.split("T")[0] === today
-    )
   } catch (error) {
     console.error("Error checking daily rating:", error)
-    return false
   }
 }

@@ -11,7 +11,27 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const ratings = await getAllDailyRatings()
+    const today = new Date().toISOString().split("T")[0];
+    const existingEntryQuery = groq`
+    *[_type == "dailyRatings" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
+  `
+    const params = {
+    userId,
+    todayStart: `${today}T00:00:00Z`,
+    tomorrow: `${today}T23:59:59Z`,
+    }
+
+    const existingEntry = await client.fetch(existingEntryQuery, params)
+
+    if(existingEntry){
+        return NextResponse.json(
+          { hasSubmitted: true},
+          { status: 409 }
+        )
+    }
+
+    const ratings = await getAllDailyRatings();
+
     return NextResponse.json(ratings, { status: 200 })
   } catch (error) {
     return NextResponse.json(
@@ -75,6 +95,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(createdDoc, { status: 201 })
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { error: "Failed to submit daily rating" },
       { status: 500 }
