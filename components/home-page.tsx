@@ -13,25 +13,26 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useUser } from "@clerk/nextjs"
 import { ALL_COIN_TRANSACTIONSResult, User } from "@/sanity.types"
+import { useCustomGoalStore } from "@/store/use-custom-goal-store"
 
-const stats = [
-  { name: "Jan", value: 30 },
-  { name: "Feb", value: 50 },
-  { name: "Mar", value: 70 },
-  { name: "Apr", value: 90 },
-  { name: "May", value: 120 },
-]
+// const stats = [
+//   { name: "Jan", value: 30 },
+//   { name: "Feb", value: 50 },
+//   { name: "Mar", value: 70 },
+//   { name: "Apr", value: 90 },
+//   { name: "May", value: 120 },
+// ]
 
 // Sample user tracking data (replace `{ Data }` with actual values)
-const userData = {
-  goals: ["Read 10 pages daily", "Exercise 3x a week"],
-  tracking: {
-    diet: "Healthy",
-    exercise: "Consistent",
-    sugarIntake: "Low",
-    mentalStrength: "Consistent",
-  },
-}
+// const userData = {
+//   goals: ["Read 10 pages daily", "Exercise 3x a week"],
+//   tracking: {
+//     diet: "Healthy",
+//     exercise: "Consistent",
+//     sugarIntake: "Low",
+//     mentalStrength: "Consistent",
+//   },
+// }
 
 interface IHomePageProps {
   coin_transactions: ALL_COIN_TRANSACTIONSResult
@@ -40,6 +41,7 @@ interface IHomePageProps {
 
 const HomePage = (props: IHomePageProps) => {
   const { user } = useUser()
+  const { goals } = useCustomGoalStore()
   const { coin_transactions, user_data } = props
 
   const streak = user_data ? user_data.streak_count : "Streak Not Available"
@@ -52,6 +54,28 @@ const HomePage = (props: IHomePageProps) => {
     },
     0
   )
+
+  const getTrackingData = (value: "Healthy" | "Consistent" | "Low") => {
+    if (value === "Healthy") {
+      return <span className="text-green-500">{value}</span>
+    } else if (value === "Consistent") {
+      return <span className="text-yellow-500">{value}</span>
+    } else {
+      return <span className="text-red-500">{value}</span>
+    }
+  }
+
+  const renderTrackingData = (
+    title: "Diet" | "Exercise" | "Sugar Intake" | "Mental Strength",
+    value: "Healthy" | "Consistent" | "Low"
+  ) => {
+    return (
+      <div className="flex justify-between">
+        <span className="font-semibold capitalize">{title}</span>
+        <span className="text-green-500">{getTrackingData(value)}</span>
+      </div>
+    )
+  }
 
   return (
     <div className="p-6 space-y-8">
@@ -126,10 +150,10 @@ const HomePage = (props: IHomePageProps) => {
               <CardTitle>Goals</CardTitle>
             </CardHeader>
             <CardContent>
-              {userData.goals.length > 0 ? (
-                userData.goals.map((goal, idx) => (
+              {goals.length > 0 ? (
+                goals.map((goal, idx) => (
                   <p key={idx} className="text-lg font-medium">
-                    ✅ {goal}
+                    ✅ {goal.name}
                   </p>
                 ))
               ) : (
@@ -150,14 +174,10 @@ const HomePage = (props: IHomePageProps) => {
               <CardTitle>Life Tracking Data</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {Object.entries(userData.tracking).map(([key, value]) => (
-                <div key={key} className="flex justify-between">
-                  <span className="font-semibold capitalize">
-                    {key.replace(/([A-Z])/g, " $1")}:{" "}
-                  </span>
-                  <span className="text-green-500">{value}</span>
-                </div>
-              ))}
+              {renderTrackingData("Diet", "Healthy")}
+              {renderTrackingData("Exercise", "Healthy")}
+              {renderTrackingData("Sugar Intake", "Healthy")}
+              {renderTrackingData("Mental Strength", "Healthy")}
             </CardContent>
           </Card>
         </motion.div>

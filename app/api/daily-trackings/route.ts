@@ -42,10 +42,13 @@ export async function GET(req: NextRequest) {
 // POST: Create a new daily tracking record
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const body = await req.json()
     const {
-      user_id,
-      date,
       diet_check,
       exercise_check,
       no_sugar,
@@ -55,17 +58,45 @@ export async function POST(req: NextRequest) {
       sleep_notes,
     } = body
 
-    if (!user_id || !date) {
+    // Ensure all required fields are present
+    if (
+      diet_check === undefined ||
+      exercise_check === undefined ||
+      no_sugar === undefined ||
+      mental_strength_check === undefined ||
+      wake_time === undefined ||
+      sleep_time === undefined
+    ) {
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 })
+    }
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0]
+
+    // Check if today's entry already exists
+    const existingEntryQuery = groq`
+      *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
+    `
+
+    const params = {
+      userId,
+      todayStart: `${today}T00:00:00Z`,
+      tomorrow: `${today}T23:59:59Z`,
+    }
+
+    const existingEntry = await client.fetch(existingEntryQuery, params)
+
+    if (existingEntry) {
       return NextResponse.json(
-        { success: false, error: "User ID and date are required" },
-        { status: 400 }
+        { error: "Daily tracking already exists for today" },
+        { status: 409 }
       )
     }
 
-    const newTracking = {
+    const newEntry = {
       _type: "dailyTracking",
-      user_id: { _type: "reference", _ref: user_id },
-      date,
+      user_id: { _type: "reference", _ref: userId },
+      date: new Date().toISOString(),
+
       diet_check: diet_check || false,
       exercise_check: exercise_check || false,
       no_sugar: no_sugar || false,
@@ -74,18 +105,15 @@ export async function POST(req: NextRequest) {
       sleep_time: sleep_time || null,
       sleep_notes: sleep_notes || "",
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     }
 
-    const createdTracking = await client.create(newTracking)
-    return NextResponse.json(
-      { success: true, data: createdTracking },
-      { status: 201 }
-    )
+    const createdDoc = await client.create(newEntry)
+
+    return NextResponse.json(createdDoc, { status: 201 })
   } catch (error) {
-    console.error("Error creating daily tracking:", error)
+    console.log(error)
     return NextResponse.json(
-      { success: false, error: "Failed to create daily tracking" },
+      { error: "Failed to submit daily rating" },
       { status: 500 }
     )
   }
@@ -94,6 +122,11 @@ export async function POST(req: NextRequest) {
 // PUT: Update an existing daily tracking record
 export async function PUT(req: NextRequest) {
   try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const body = await req.json()
     const {
       id,
@@ -110,6 +143,29 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json(
         { success: false, error: "Tracking ID is required" },
         { status: 400 }
+      )
+    }
+
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0]
+
+    // Check if today's entry already exists
+    const existingEntryQuery = groq`
+      *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
+    `
+
+    const params = {
+      userId,
+      todayStart: `${today}T00:00:00Z`,
+      tomorrow: `${today}T23:59:59Z`,
+    }
+
+    const existingEntry = await client.fetch(existingEntryQuery, params)
+
+    if (existingEntry) {
+      return NextResponse.json(
+        { error: "Daily tracking already exists for today" },
+        { status: 409 }
       )
     }
 
