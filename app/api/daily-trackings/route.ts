@@ -1,19 +1,39 @@
-import { client } from "@/sanity/lib/client"
-import { getAllDailyTrackings } from "@/sanity/lib/daily-trackings/getAll"
 import { NextRequest, NextResponse } from "next/server"
+import { auth } from "@clerk/nextjs/server"
+import { client } from "@/sanity/lib/client"
+import { groq } from "next-sanity"
+import { getAllDailyTrackings } from "@/sanity/lib/daily-trackings/getAll"
 
 // GET: Fetch all daily trackings
 export async function GET(req: NextRequest) {
   try {
-    const trackings = await getAllDailyTrackings()
-    return NextResponse.json(
-      { success: true, data: trackings },
-      { status: 200 }
-    )
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const today = new Date().toISOString().split("T")[0]
+    const existingEntryQuery = groq`
+    *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
+  `
+    const params = {
+      userId,
+      todayStart: `${today}T00:00:00Z`,
+      tomorrow: `${today}T23:59:59Z`,
+    }
+
+    const existingEntry = await client.fetch(existingEntryQuery, params)
+
+    if (existingEntry) {
+      return NextResponse.json({ hasSubmitted: true }, { status: 409 })
+    }
+
+    const tracking = await getAllDailyTrackings()
+
+    return NextResponse.json(tracking, { status: 200 })
   } catch (error) {
-    console.error("Error fetching daily trackings:", error)
     return NextResponse.json(
-      { success: false, error: "Failed to fetch daily trackings" },
+      { error: "Failed to fetch daily ratings" },
       { status: 500 }
     )
   }
