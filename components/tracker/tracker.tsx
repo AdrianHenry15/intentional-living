@@ -8,8 +8,8 @@ import { SiCustomink } from "react-icons/si"
 import DataWidget from "../daily-trackings/data-widget"
 import CustomGoalItem from "./custom-goal-item"
 import { Button } from "../button"
-import { useTrackerStore } from "@/store/use-tracker-store"
 import { useCustomGoalStore } from "@/store/use-custom-goal-store"
+import { useDailyTrackingStore } from "@/store/use-daily-tracking-store"
 
 const Tracker = () => {
   const {
@@ -21,7 +21,7 @@ const Tracker = () => {
     toggleExercise,
     toggleSugar,
     toggleMental,
-  } = useTrackerStore()
+  } = useDailyTrackingStore()
 
   const { goals, addGoal, toggleComplete, toggleInputComplete, deleteGoal } =
     useCustomGoalStore()
@@ -99,7 +99,7 @@ const Tracker = () => {
       </motion.div>
 
       <Button className="my-10 mb-32 bg-gradient-to-r from-yellow-500 to-black w-[300px] self-center flex items-center justify-center">
-        Save
+        Save Tracking Data
       </Button>
     </div>
   )
