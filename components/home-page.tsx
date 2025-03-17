@@ -65,7 +65,7 @@ const HomePage = (props: IHomePageProps) => {
       </motion.h1>
 
       {/* Stats Graph */}
-      <motion.div
+      {/* <motion.div
         className="bg-white dark:bg-gray-900 shadow-md rounded-2xl p-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ const HomePage = (props: IHomePageProps) => {
             />
           </LineChart>
         </ResponsiveContainer>
-      </motion.div>
+      </motion.div> */}
 
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

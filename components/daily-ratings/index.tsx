@@ -8,6 +8,7 @@ import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import { Button } from "../button"
+import Link from "next/link"
 
 const DailyRatings = () => {
   const { user } = useUser()
@@ -62,9 +63,9 @@ const DailyRatings = () => {
       await axios.post("/api/daily-ratings", {
         user_id: userId,
         date: new Date().toISOString(),
-        ratings: ratings
+        ratings: ratings,
       })
-      console.log("error here");
+      console.log("error here")
       alert("Your ratings have been submitted!")
     } catch (error) {
       console.error("Failed to submit ratings:", error)
@@ -86,7 +87,7 @@ const DailyRatings = () => {
       transition={{ duration: 0.5, ease: "easeInOut" }}>
       <Progress current={currentQuestion + 1} total={questions.length} />
 
-      {currentQuestion < questions.length-1 ? (
+      {currentQuestion < questions.length - 1 ? (
         <motion.div
           key={currentQuestion}
           initial={{ opacity: 0, x: -50 }}
@@ -141,7 +142,11 @@ const DailyRatings = () => {
             Thank you for completing the life tracker. Your responses have been
             recorded.
           </p>
-          <Button title="Go Home" />
+          <Link className="flex items-center justify-center w-full" href={"/"}>
+            <button className="px-4 py-2 text-center rounded-lg bg-yellow-500 shadow-lg mt-4">
+              Go Home
+            </button>
+          </Link>
         </motion.div>
       )}
     </motion.div>
