@@ -31,7 +31,7 @@ export default function RootLayout({
   const hiddenRoutes = [
     "/auth/notes",
     "/auth/referral",
-    "/auth/profile",
+    "/user-profile/(.*)",
     "/auth/settings",
     "/auth/daily-ratings",
   ]

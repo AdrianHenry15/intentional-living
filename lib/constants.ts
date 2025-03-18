@@ -24,7 +24,7 @@ export const getNavItems = () => [
   // },
   {
     title: "Profile",
-    link: "/auth/profile",
+    link: "/user-profile",
     icon: User,
   },
 ]
