@@ -90,8 +90,8 @@ const SleepData = () => {
 
       <Button
         onClick={handleUpdate}
-        className="my-10 bg-gradient-to-r from-yellow-500 to-black w-[300px] self-center flex items-center justify-center">
-        Save Sleep Data
+        className="my-10 bg-green-500 w-[300px] self-center flex items-center justify-center">
+        Save Sleep Progress
       </Button>
     </motion.div>
   )

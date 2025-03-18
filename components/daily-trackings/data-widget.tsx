@@ -70,7 +70,7 @@ const DataWidget: React.FC<IDataWidgetProps> = (props) => {
   return (
     <motion.button
       onClick={isCustom && !inputComplete ? () => {} : setIsComplete}
-      className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
+      className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col my-6 flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
       whileHover={{ scale: 1.05 }} // Scale on hover for a more interactive UI
       transition={{ type: "spring", stiffness: 300 }} // Smooth spring animation on hover
     >

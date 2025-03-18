@@ -9,13 +9,14 @@ import Link from "next/link"
 import { Button } from "@/components/button"
 import { PhoneCall } from "lucide-react"
 import PhoneNumberProfileLink from "@/components/user-profile/phone-number-profile-link"
+import BottomNavbar from "@/components/navbar/bottom-navbar"
 
 export default function UserProfilePage() {
   const { user } = useUser()
   const { signOut } = useClerk()
 
   return (
-    <div className="flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg shadow-lg w-full max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto px-6 py-6 md:py-8">
+    <div className="flex flex-col bg-gray-100 pb-24 md:pb-28 dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg shadow-lg w-full mx-auto px-6 py-6 md:py-8">
       {/* Profile Header */}
       <div className="flex items-center justify-between border-b pb-4 mb-4">
         {/* User Info */}
@@ -63,6 +64,7 @@ export default function UserProfilePage() {
           Logout
         </Button>
       </div>
+      <BottomNavbar />
     </div>
   )
 }

@@ -98,8 +98,8 @@ const Tracker = () => {
         )}
       </motion.div>
 
-      <Button className="my-10 mb-32 bg-gradient-to-r from-yellow-500 to-black w-[300px] self-center flex items-center justify-center">
-        Save Tracking Data
+      <Button className="my-10 mb-32 bg-green-500 w-[300px] self-center flex items-center justify-center">
+        Save Progress
       </Button>
     </div>
   )

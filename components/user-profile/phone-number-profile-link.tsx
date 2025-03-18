@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "../button"
 import { usePhoneStore } from "@/store/userPhoneStore"
+import BottomNavbar from "../navbar/bottom-navbar"
 
 export default function PhoneNumberProfileLink() {
   const { phoneNumber, setPhoneNumber, clearPhoneNumber } = usePhoneStore()
