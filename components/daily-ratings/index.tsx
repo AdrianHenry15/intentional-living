@@ -7,7 +7,6 @@ import Question from "./question"
 import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
-import { Button } from "../button"
 import Link from "next/link"
 
 const DailyRatings = () => {

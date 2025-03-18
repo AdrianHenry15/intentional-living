@@ -8,8 +8,7 @@ import BottomNavbar from "@/components/navbar/bottom-navbar"
 import SettingsWidget from "@/components/widgets/settings-widget"
 import FooterSpace from "@/components/footer-spacer"
 import QuickNoteWidget from "@/components/widgets/quick-note-widget"
-import Image from "next/image"
-import Logo from "@/public/assets/il-logo.png"
+import DailyRatingsModal from "@/components/modals/daily-ratings-modal"
 
 export default function RootLayout({
   children,
@@ -43,6 +42,7 @@ export default function RootLayout({
 
   return (
     <main className="sticky top-0 z-50 bg-gray-900 shadow-lg h-screen w-full flex flex-col">
+      {pathname !== "/auth/daily-ratings" && <DailyRatingsModal />}
       {shouldShowCalendar && <WeekCalendar />}
       {children}
       <SettingsWidget />

@@ -14,6 +14,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useUser } from "@clerk/nextjs"
 import { ALL_COIN_TRANSACTIONSResult, User } from "@/sanity.types"
 import { useCustomGoalStore } from "@/store/use-custom-goal-store"
+import { useDailyRatingsStore } from "@/store/use-daily-ratings"
+import { useDailyTrackingStore } from "@/store/use-daily-tracking-store"
 
 // const stats = [
 //   { name: "Jan", value: 30 },
@@ -42,9 +44,19 @@ interface IHomePageProps {
 const HomePage = (props: IHomePageProps) => {
   const { user } = useUser()
   const { goals } = useCustomGoalStore()
+  const { ratings } = useDailyRatingsStore()
+  const {
+    wakeTime,
+    sleepTime,
+    sleepNotes,
+    dietCheck,
+    exerciseCheck,
+    sugarCheck,
+    mentalCheck,
+  } = useDailyTrackingStore()
   const { coin_transactions, user_data } = props
 
-  const streak = user_data ? user_data.streak_count : "Streak Not Available"
+  const streak = user_data ? user_data.streak_count : "0"
 
   // Calculate the total sum of coin transactions
   const totalCoinTransactionAmount = coin_transactions.reduce(
@@ -55,24 +67,37 @@ const HomePage = (props: IHomePageProps) => {
     0
   )
 
-  const getTrackingData = (value: "Healthy" | "Consistent" | "Low") => {
+  const getTrackingData = (
+    value: "Healthy" | "Consistent" | "Low" | string
+  ) => {
     if (value === "Healthy") {
       return <span className="text-green-500">{value}</span>
     } else if (value === "Consistent") {
       return <span className="text-yellow-500">{value}</span>
-    } else {
+    } else if (value === "Low") {
       return <span className="text-red-500">{value}</span>
+    } else {
+      return <span className="text-white">{value}</span>
     }
   }
 
   const renderTrackingData = (
-    title: "Diet" | "Exercise" | "Sugar Intake" | "Mental Strength",
-    value: "Healthy" | "Consistent" | "Low"
+    title: "Diet" | "Exercise" | "Sugar Intake" | "Mental Strength" | string,
+    value: "Healthy" | "Consistent" | "Low" | string
   ) => {
     return (
       <div className="flex justify-between">
         <span className="font-semibold capitalize">{title}</span>
-        <span className="text-green-500">{getTrackingData(value)}</span>
+        <span>{getTrackingData(value)}</span>
+      </div>
+    )
+  }
+
+  const renderRatings = (title: string, value: string) => {
+    return (
+      <div className="flex flex-col ">
+        <span className="font-semibold capitalize">{title}</span>
+        <span className="text-white">{value || "No Data"}</span>
       </div>
     )
   }
@@ -110,6 +135,45 @@ const HomePage = (props: IHomePageProps) => {
           </LineChart>
         </ResponsiveContainer>
       </motion.div> */}
+
+      {/* Ratings */}
+      <motion.div
+        className="col-span-1 md:col-span-2"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.7 }}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Ratings</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {renderRatings(
+              `How does ${user?.fullName} feel today?`,
+              ratings?.question_1_rating?.toString() as string
+            )}
+            {renderRatings(
+              `How was ${user?.fullName}'s mindset today?`,
+              ratings?.question_2_rating?.toString() as string
+            )}
+            {renderRatings(
+              "Rate your sense of community today.",
+              ratings?.question_3_rating?.toString() as string
+            )}
+            {renderRatings(
+              "Do I improve .01% today?",
+              ratings?.question_4_rating?.toString() as string
+            )}
+            {renderRatings(
+              "How many hours of learning did I do today?",
+              ratings?.question_5_rating?.toString() as string
+            )}
+            {renderRatings(
+              "How was your energy level today?",
+              ratings?.question_6_rating?.toString() as string
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -174,10 +238,34 @@ const HomePage = (props: IHomePageProps) => {
               <CardTitle>Life Tracking Data</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {renderTrackingData("Diet", "Healthy")}
-              {renderTrackingData("Exercise", "Healthy")}
-              {renderTrackingData("Sugar Intake", "Healthy")}
-              {renderTrackingData("Mental Strength", "Healthy")}
+              {renderTrackingData(
+                "Diet",
+                dietCheck ? "Complete" : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Exercise",
+                exerciseCheck ? "Complete" : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Sugar Intake",
+                sugarCheck ? "Complete" : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Mental Strength",
+                mentalCheck ? "Complete" : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Wake Time",
+                wakeTime ? (wakeTime?.toString() as string) : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Sleep Time",
+                sleepTime ? (sleepTime?.toString() as string) : "Incomplete"
+              )}
+              {renderTrackingData(
+                "Sleep Notes",
+                sleepNotes ? (sleepNotes?.toString() as string) : "Incomplete"
+              )}
             </CardContent>
           </Card>
         </motion.div>
