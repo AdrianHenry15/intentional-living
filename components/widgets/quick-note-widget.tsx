@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Plus } from "lucide-react"
 import { motion } from "framer-motion"
 import { useNoteStore } from "@/store/use-note-store"
-import { SignIn, UserButton, useUser } from "@clerk/nextjs"
+import { SignIn, SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import { Button } from "../button"
 
 export default function QuickNoteWidget() {
@@ -19,6 +19,10 @@ export default function QuickNoteWidget() {
       setNoteText("") // Clear the note input
       setIsOpen(false) // Close the form
     }
+  }
+
+  const onLogin = () => {
+    setIsOpen(false)
   }
 
   return (
@@ -41,17 +45,19 @@ export default function QuickNoteWidget() {
           exit={{ opacity: 0, y: 20 }}
           className="bg-gray-800 p-4 rounded-lg shadow-md max-w-sm w-full mt-4">
           <p>You need to be signed in to write note.</p>
-          <div>
+          <div className="mt-4">
             <button
               onClick={() => setIsOpen(false)}
               className="bg-red-600 mr-2 p-2 rounded-md text-white hover:bg-red-700 transition">
               Close
             </button>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="bg-blue-600 p-2 rounded-md text-white hover:bg-blue-700 transition">
-              Sign in/up
-            </button>
+            <SignInButton>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="bg-blue-600 p-2 rounded-md text-white hover:bg-blue-700 transition">
+                Login/Signup
+              </button>
+            </SignInButton>
           </div>
         </motion.div>
       )}
