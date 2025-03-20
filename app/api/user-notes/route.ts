@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { client } from "@/sanity/lib/client"
 import { getUserNotesById } from "@/sanity/lib/user-notes/getById"
+import { ensureUserExists } from "@/sanity/lib/user/ensure-user-exists"
 
 export async function GET(req: NextRequest) {
   try {
@@ -29,6 +30,9 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    // Ensure user exists in Sanity
+    await ensureUserExists(userId)
 
     const body = await req.json()
     const { content, date } = body

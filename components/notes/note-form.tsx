@@ -16,9 +16,9 @@ export default function NoteForm(props: INoteFormProps) {
   useEffect(() => {
     if (id) {
       // If there's an id, we are editing an existing note
-      const note = notes.find((note) => note.id === id)
+      const note = notes.find((note) => note._id === id)
       if (note) {
-        setNoteText(note.text)
+        setNoteText(note.content)
       }
     }
   }, [id, notes, setNoteText])

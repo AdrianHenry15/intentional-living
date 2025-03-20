@@ -37,17 +37,17 @@ export default function NotesPage() {
         ) : (
           notes.map((note) => (
             <motion.div
-              key={note.id}
+              key={note._id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all">
               <div className="flex justify-between items-center">
-                <span className="flex-1 text-lg">{note.text}</span>
+                <span className="flex-1 text-lg">{note.content}</span>
 
                 <div className="flex items-center space-x-4">
                   <motion.button
-                    onClick={() => router.push(`/auth/notes/${note.id}`)} // Redirect to the note edit page
+                    onClick={() => router.push(`/auth/notes/${note._id}`)} // Redirect to the note edit page
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     className="text-yellow-500 hover:text-yellow-400 transition">
@@ -55,7 +55,7 @@ export default function NotesPage() {
                   </motion.button>
 
                   <motion.button
-                    onClick={() => deleteNote(note.id)}
+                    onClick={() => deleteNote(note._id)}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     className="text-red-500 hover:text-red-400 transition">
@@ -65,7 +65,23 @@ export default function NotesPage() {
               </div>
 
               {/* Date Below Note */}
-              <p className="text-xs text-gray-400 mt-2">{note.date}</p>
+              <div className="flex flex-col text-start">
+                <p className="text-xs text-gray-400 mt-2">{note.date}</p>
+                <span className="flex items-center text-[11px] text-gray-400/50">
+                  <h5 className="mr-1">Updated: </h5>
+                  <p>
+                    {new Date(note.updated_at).toLocaleString("en-US", {
+                      weekday: "short", // e.g., "Thu"
+                      month: "short", // e.g., "Mar"
+                      day: "2-digit", // e.g., "20"
+                      year: "numeric", // e.g., "2025"
+                      hour: "2-digit", // e.g., "03 PM"
+                      minute: "2-digit", // e.g., "36"
+                      hour12: true, // 12-hour format
+                    })}
+                  </p>
+                </span>
+              </div>
             </motion.div>
           ))
         )}
