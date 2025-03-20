@@ -13,9 +13,9 @@ const Question = ({ question, selectedRating, handleNext }: QuestionProps) => {
         {[...Array(10)].map((_, i) => (
           <button
             key={i}
-            className={`w-10 h-10 rounded-full text-lg font-bold transition-all 
-                          ${selectedRating === i + 1 ? "bg-yellow-400 text-black" : "bg-gray-700 text-white"}
-                          hover:bg-yellow-500`}
+            className={`flex flex-1 rounded-full text-lg font-bold transition-all 
+                     ${selectedRating === i + 1 ? "bg-yellow-400 text-black" : "bg-gray-700 text-white"}
+                     hover:bg-yellow-500 text-[12px] flex flex-1 justify-center items-center`}
             onClick={() => handleNext(i + 1)}>
             {i + 1}
           </button>

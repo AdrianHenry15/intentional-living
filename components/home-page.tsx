@@ -95,7 +95,7 @@ const HomePage = (props: IHomePageProps) => {
 
   const renderRatings = (title: string, value: string) => {
     return (
-      <div className="flex flex-col ">
+      <div className="flex flex-col border bg-gray-700 p-4 rounded-lg">
         <span className="font-semibold capitalize">{title}</span>
         <span className="text-white">{value || "No Data"}</span>
       </div>

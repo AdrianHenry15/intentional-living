@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "../button"
-import { usePhoneStore } from "@/store/userPhoneStore"
+import { usePhoneStore } from "@/store/use-phone-store"
 import BottomNavbar from "../navbar/bottom-navbar"
 
 export default function PhoneNumberProfileLink() {

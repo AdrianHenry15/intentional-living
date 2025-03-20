@@ -9,6 +9,7 @@ import SettingsWidget from "@/components/widgets/settings-widget"
 import FooterSpace from "@/components/footer-spacer"
 import QuickNoteWidget from "@/components/widgets/quick-note-widget"
 import DailyRatingsModal from "@/components/modals/daily-ratings-modal"
+import { useDailyRatingsStore } from "@/store/use-daily-ratings"
 
 export default function RootLayout({
   children,
@@ -16,8 +17,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const { user, isSignedIn } = useUser()
+  const { resetDailyRatingsCompletion, hasCompletedDailyRatings } =
+    useDailyRatingsStore()
   const pathname = usePathname()
-  const router = useRouter()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -25,7 +27,33 @@ export default function RootLayout({
       setLoading(false)
       return
     }
-  }, [isSignedIn, user, router])
+
+    // Function to reset daily ratings completion at the start of each day
+    const resetAtMidnight = () => {
+      const now = new Date()
+      const midnight = new Date()
+      midnight.setHours(24, 0, 0, 0) // Set to midnight of the current day
+
+      const timeUntilMidnight = midnight.getTime() - now.getTime()
+
+      setTimeout(() => {
+        resetDailyRatingsCompletion() // Reset the daily ratings completion
+        setInterval(
+          () => {
+            resetDailyRatingsCompletion() // Reset every day at midnight
+          },
+          24 * 60 * 60 * 1000
+        ) // 24 hours interval
+      }, timeUntilMidnight) // Wait until midnight to reset
+    }
+
+    resetAtMidnight()
+
+    return () => {
+      // Cleanup any intervals or timeouts if the component unmounts
+      resetDailyRatingsCompletion()
+    }
+  }, [isSignedIn, user, resetDailyRatingsCompletion])
 
   // Define base routes where the calendar should be hidden
   const hiddenRoutes = [
@@ -42,7 +70,9 @@ export default function RootLayout({
 
   return (
     <main className="sticky top-0 z-50 bg-gray-900 shadow-lg h-screen w-full flex flex-col">
-      {pathname !== "/auth/daily-ratings" && <DailyRatingsModal />}
+      {pathname !== "/auth/daily-ratings" && hasCompletedDailyRatings && (
+        <DailyRatingsModal />
+      )}
       {shouldShowCalendar && <WeekCalendar />}
       {children}
       <SettingsWidget />

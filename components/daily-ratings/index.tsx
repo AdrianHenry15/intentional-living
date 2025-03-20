@@ -8,9 +8,11 @@ import { getQuestions } from "@/lib/questions"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import Link from "next/link"
+import { useDailyRatingsStore } from "@/store/use-daily-ratings"
 
 const DailyRatings = () => {
   const { user } = useUser()
+  const { markDailyRatingsCompleted } = useDailyRatingsStore()
   const userId = user?.id
   const userName = user?.fullName || "(Guest)"
 
@@ -39,6 +41,7 @@ const DailyRatings = () => {
         setCurrentQuestion((prev) => prev + 1)
       } else {
         submitRatings(updatedRatings) // Send data after the last question
+        markDailyRatingsCompleted()
       }
       setIsTransitioning(false)
     }, 100)

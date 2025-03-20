@@ -90,7 +90,9 @@ export default function SettingsPage() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="bg-gray-800 p-6 rounded-lg shadow-lg w-full sm:w-[500px] self-center">
           <div className="flex justify-between items-center">
-            <span className="text-lg font-medium">Enable Notifications</span>
+            <span className="text-lg font-medium">
+              Enable Push Notifications
+            </span>
             <motion.input
               type="checkbox"
               checked={notificationsEnabled}

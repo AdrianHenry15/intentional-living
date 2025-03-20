@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@clerk/nextjs"
 import {
   Dialog,
   DialogPanel,
@@ -17,8 +16,7 @@ import { CloseIcon } from "@sanity/icons"
 export default function DailyRatingsModal() {
   const [isOpen, setIsOpen] = useState(true)
   const router = useRouter()
-  const { userId } = useAuth()
-  const { ratings, fetchRatings, loading } = useDailyRatingsStore()
+  const { ratings, loading } = useDailyRatingsStore()
 
   const today = new Date().toISOString().split("T")[0] // Format YYYY-MM-DD
 
