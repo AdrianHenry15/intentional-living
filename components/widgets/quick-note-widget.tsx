@@ -44,7 +44,7 @@ export default function QuickNoteWidget() {
           <div>
             <button
               onClick={() => setIsOpen(false)}
-              className="bg-red-600 p-2 rounded-md text-white hover:bg-red-700 transition">
+              className="bg-red-600 mr-2 p-2 rounded-md text-white hover:bg-red-700 transition">
               Close
             </button>
             <button
