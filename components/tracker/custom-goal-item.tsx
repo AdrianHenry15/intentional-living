@@ -11,7 +11,7 @@ const CustomGoalItem = (props: ICustomGoalItemProps) => {
   return (
     <button
       onClick={setCustomGoal}
-      className="flex z-50 flex-col text-black items-center justify-center w-[300px] border-[1px] border-black py-2 rounded-lg">
+      className="flex z-10 flex-col text-black items-center justify-center w-[300px] border-[1px] border-black py-2 rounded-lg">
       <div className="bg-white rounded-full p-4">
         <FaPlus size={25} />
       </div>
