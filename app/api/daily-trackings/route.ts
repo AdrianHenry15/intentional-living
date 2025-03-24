@@ -8,25 +8,8 @@ import { getAllDailyTrackings } from "@/sanity/lib/daily-trackings/getAll"
 export async function GET(req: NextRequest) {
   try {
     const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
 
     const today = new Date().toISOString().split("T")[0]
-    const existingEntryQuery = groq`
-    *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
-  `
-    const params = {
-      userId,
-      todayStart: `${today}T00:00:00Z`,
-      tomorrow: `${today}T23:59:59Z`,
-    }
-
-    const existingEntry = await client.fetch(existingEntryQuery, params)
-
-    if (existingEntry) {
-      return NextResponse.json({ hasSubmitted: true }, { status: 409 })
-    }
 
     const tracking = await getAllDailyTrackings()
 
@@ -43,50 +26,41 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    console.log("User ID: ", userId)
+    // if (!userId) {
+    //   log("ERROR", "Unauthorized access attempt.")
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    // }
 
     const body = await req.json()
-    const {
-      diet_check,
-      exercise_check,
-      no_sugar,
-      mental_strength_check,
-      wake_time,
-      sleep_time,
-      sleep_notes,
-    } = body
 
-    console.log("Body: ", JSON.stringify(body))
-
-    // Ensure all required fields are present
-    if (
-      diet_check === undefined ||
-      exercise_check === undefined ||
-      no_sugar === undefined ||
-      mental_strength_check === undefined ||
-      wake_time === undefined ||
-      sleep_time === undefined
-    ) {
-      return NextResponse.json({ error: "Invalid data" }, { status: 400 })
+    // Validate required fields
+    const requiredFields = [
+      "diet_check",
+      "exercise_check",
+      "no_sugar",
+      "mental_strength_check",
+      "wake_time",
+      "sleep_time",
+    ]
+    for (const field of requiredFields) {
+      if (body[field] === undefined) {
+        return NextResponse.json(
+          { error: `Invalid data, missing: ${field}` },
+          { status: 400 }
+        )
+      }
     }
-    // Get today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split("T")[0]
 
-    // Check if today's entry already exists
+    // Prevent duplicate entries for today
+    const today = new Date().toISOString().split("T")[0]
     const existingEntryQuery = groq`
       *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
     `
-
     const params = {
       userId,
       todayStart: `${today}T00:00:00Z`,
       tomorrow: `${today}T23:59:59Z`,
     }
-
     const existingEntry = await client.fetch(existingEntryQuery, params)
 
     if (existingEntry) {
@@ -96,18 +70,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Create new tracking entry
     const newEntry = {
       _type: "dailyTracking",
       user_id: { _type: "reference", _ref: userId },
       date: new Date().toISOString(),
-
-      diet_check: diet_check || false,
-      exercise_check: exercise_check || false,
-      no_sugar: no_sugar || false,
-      mental_strength_check: mental_strength_check || false,
-      wake_time: wake_time || null,
-      sleep_time: sleep_time || null,
-      sleep_notes: sleep_notes || "",
+      ...body,
       created_at: new Date().toISOString(),
     }
 
@@ -115,9 +83,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(createdDoc, { status: 201 })
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
-      { error: "Failed to submit daily rating" },
+      { error: "Failed to submit daily tracking" },
       { status: 500 }
     )
   }
@@ -127,71 +94,37 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    // if (!userId) {
+    //   log("ERROR", "Unauthorized access attempt.")
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    // }
 
     const body = await req.json()
-    const {
-      diet_check,
-      exercise_check,
-      no_sugar,
-      mental_strength_check,
-      wake_time,
-      sleep_time,
-      sleep_notes,
-    } = body
 
-    // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split("T")[0]
-
-    // Check if today's entry already exists
     const existingEntryQuery = groq`
       *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
     `
-
     const params = {
       userId,
       todayStart: `${today}T00:00:00Z`,
       tomorrow: `${today}T23:59:59Z`,
     }
-
     let existingEntry = await client.fetch(existingEntryQuery, params)
 
     if (!existingEntry) {
-      // If no tracking entry exists, create one
-      const newEntry = {
+      existingEntry = await client.create({
         _type: "dailyTracking",
         user_id: { _type: "reference", _ref: userId },
         date: new Date().toISOString(),
-        diet_check: diet_check || false,
-        exercise_check: exercise_check || false,
-        no_sugar: no_sugar || false,
-        mental_strength_check: mental_strength_check || false,
-        wake_time: wake_time || null,
-        sleep_time: sleep_time || null,
-        sleep_notes: sleep_notes || "",
+        ...body,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      }
-
-      existingEntry = await client.create(newEntry)
+      })
     } else {
-      // If an entry exists, update it
-      const updates = {
-        ...(diet_check !== undefined && { diet_check }),
-        ...(exercise_check !== undefined && { exercise_check }),
-        ...(no_sugar !== undefined && { no_sugar }),
-        ...(mental_strength_check !== undefined && { mental_strength_check }),
-        ...(wake_time !== undefined && { wake_time }),
-        ...(sleep_time !== undefined && { sleep_time }),
-        ...(sleep_notes !== undefined && { sleep_notes }),
-        updated_at: new Date().toISOString(),
-      }
-
       existingEntry = await client
         .patch(existingEntry._id)
-        .set(updates)
+        .set({ ...body, updated_at: new Date().toISOString() })
         .commit()
     }
 
@@ -200,7 +133,6 @@ export async function PUT(req: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
-    console.error("Error updating daily tracking:", error)
     return NextResponse.json(
       { success: false, error: "Failed to update daily tracking" },
       { status: 500 }
@@ -217,12 +149,9 @@ export async function DELETE(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { id } = body
-
-    let trackingId = id // New variable to hold the ID
+    let trackingId = body.id
 
     if (!trackingId) {
-      // Find today's tracking entry if no id is provided
       const today = new Date().toISOString().split("T")[0]
       const existingEntryQuery = groq`
         *[_type == "dailyTracking" && user_id._ref == $userId && date >= $todayStart && date < $tomorrow][0]
@@ -232,7 +161,6 @@ export async function DELETE(req: NextRequest) {
         todayStart: `${today}T00:00:00Z`,
         tomorrow: `${today}T23:59:59Z`,
       }
-
       const existingEntry = await client.fetch(existingEntryQuery, params)
 
       if (!existingEntry) {
@@ -242,16 +170,16 @@ export async function DELETE(req: NextRequest) {
         )
       }
 
-      trackingId = existingEntry._id // Assign the found entry's ID
+      trackingId = existingEntry._id
     }
 
     await client.delete(trackingId)
+
     return NextResponse.json(
       { success: true, message: "Daily tracking deleted" },
       { status: 200 }
     )
   } catch (error) {
-    console.error("Error deleting daily tracking:", error)
     return NextResponse.json(
       { success: false, error: "Failed to delete daily tracking" },
       { status: 500 }

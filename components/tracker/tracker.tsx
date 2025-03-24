@@ -10,8 +10,10 @@ import CustomGoalItem from "./custom-goal-item"
 import { Button } from "../button"
 import { useCustomGoalStore } from "@/store/use-custom-goal-store"
 import { useDailyTrackingStore } from "@/store/use-daily-tracking-store"
+import { useUser } from "@clerk/nextjs"
 
 const Tracker = () => {
+  const { user } = useUser()
   const {
     dietCheck,
     exerciseCheck,
@@ -47,28 +49,28 @@ const Tracker = () => {
           icon={<FaCookieBite />}
           title="Diet"
           isComplete={dietCheck}
-          setIsComplete={toggleDiet}
+          setDailyTrackingComplete={toggleDiet()}
           totalCompletions={5}
         />
         <DataWidget
           icon={<FaRunning />}
           title="Exercise"
           isComplete={exerciseCheck}
-          setIsComplete={toggleExercise}
+          setDailyTrackingComplete={toggleExercise()}
           totalCompletions={5}
         />
         <DataWidget
           icon={<TbCandy />}
           title="Sugar Intake"
           isComplete={sugarCheck}
-          setIsComplete={toggleSugar}
+          setDailyTrackingComplete={toggleSugar()}
           totalCompletions={5}
         />
         <DataWidget
           icon={<FaBrain />}
           title="Mental Strengthening"
           isComplete={mentalCheck}
-          setIsComplete={toggleMental}
+          setDailyTrackingComplete={toggleMental()}
           totalCompletions={5}
         />
 
@@ -80,7 +82,9 @@ const Tracker = () => {
             icon={<SiCustomink />}
             title={goal.name}
             isComplete={goal.isComplete}
-            setIsComplete={() => toggleComplete(goal.id)}
+            setCustomComplete={() =>
+              toggleComplete(goal.id, user?.id as string)
+            }
             totalCompletions={5}
             isCustom
             inputChange={(e) => {}}

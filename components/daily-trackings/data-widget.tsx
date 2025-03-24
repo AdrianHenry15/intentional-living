@@ -10,7 +10,8 @@ interface IDataWidgetProps {
   title: string // Title or label for the widget
   isComplete: boolean // Flag indicating whether the task is complete
   totalCompletions: number // The number of completions for the task
-  setIsComplete: () => void // Function to toggle the completion state
+  setDailyTrackingComplete?: Promise<void> // Function to toggle the completion state
+  setCustomComplete?: () => void // Function to toggle the completion state
   deleteGoal?: () => void // Function to toggle the completion state
   setInputComplete?: () => void // Function to mark input as complete (optional)
   inputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Input change handler (optional)
@@ -21,7 +22,8 @@ interface IDataWidgetProps {
 const DataWidget: React.FC<IDataWidgetProps> = (props) => {
   const {
     icon,
-    setIsComplete,
+    setDailyTrackingComplete,
+    setCustomComplete,
     inputChange,
     setInputComplete,
     deleteGoal,
@@ -67,9 +69,11 @@ const DataWidget: React.FC<IDataWidgetProps> = (props) => {
     }
   }, [totalCompletions]) // Recalculate only if `totalCompletions` changes
 
+  const setItem = () => {}
+
   return (
     <motion.button
-      onClick={isCustom && !inputComplete ? () => {} : setIsComplete}
+      // onClick={isCustom && !inputComplete ? () => {} : setDailyTrackingComplete}
       className={`${isComplete ? "bg-green-200" : "bg-white"} flex flex-col my-6 flex-auto w-[300px] p-4 rounded-lg shadow-lg`}
       whileHover={{ scale: 1.05 }} // Scale on hover for a more interactive UI
       transition={{ type: "spring", stiffness: 300 }} // Smooth spring animation on hover

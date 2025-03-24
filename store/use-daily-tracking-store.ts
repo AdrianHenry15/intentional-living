@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import axios from "axios"
+import { toast } from "react-hot-toast"
 
 type DailyTrackingStore = {
   dietCheck: boolean
@@ -35,20 +36,18 @@ export const useDailyTrackingStore = create<DailyTrackingStore>((set, get) => ({
   fetchTracking: async () => {
     try {
       const response = await axios.get("/api/daily-trackings")
-      if (response.status === 200) {
-        const data = response.data
-        if (data && data.length > 0) {
-          set({
-            dietCheck: data[0].diet_check,
-            exerciseCheck: data[0].exercise_check,
-            sugarCheck: data[0].no_sugar,
-            mentalCheck: data[0].mental_strength_check,
-            wakeTime: data[0].wake_time || null,
-            sleepTime: data[0].sleep_time || null,
-            sleepNotes: data[0].sleep_notes || "",
-            trackingId: data[0]._id,
-          })
-        }
+      if (response.status === 200 && response.data.length > 0) {
+        const data = response.data[0]
+        set({
+          dietCheck: data.diet_check,
+          exerciseCheck: data.exercise_check,
+          sugarCheck: data.no_sugar,
+          mentalCheck: data.mental_strength_check,
+          wakeTime: data.wake_time || null,
+          sleepTime: data.sleep_time || null,
+          sleepNotes: data.sleep_notes || "",
+          trackingId: data._id,
+        })
       }
     } catch (error) {
       console.error("Error fetching tracking data:", error)
@@ -56,147 +55,19 @@ export const useDailyTrackingStore = create<DailyTrackingStore>((set, get) => ({
   },
 
   toggleDiet: async () => {
-    const {
-      dietCheck,
-      trackingId,
-      exerciseCheck,
-      sugarCheck,
-      mentalCheck,
-      wakeTime,
-      sleepTime,
-      sleepNotes,
-    } = get()
-    try {
-      let updatedId = trackingId
-      const payload = { diet_check: !dietCheck }
-
-      if (trackingId) {
-        await axios.put("/api/daily-trackings", { id: trackingId, ...payload })
-      } else {
-        const response = await axios.post("/api/daily-trackings", {
-          ...payload,
-          exercise_check: exerciseCheck,
-          no_sugar: sugarCheck,
-          mental_strength_check: mentalCheck,
-          wake_time: wakeTime,
-          sleep_time: sleepTime,
-          sleep_notes: sleepNotes,
-        })
-        updatedId = response.data._id
-      }
-
-      set({ dietCheck: !dietCheck, trackingId: updatedId })
-    } catch (error) {
-      console.error("Error updating diet tracking:", error)
-    }
+    await toggleTracking("dietCheck", "diet_check")
   },
 
   toggleExercise: async () => {
-    const {
-      exerciseCheck,
-      trackingId,
-      dietCheck,
-      sugarCheck,
-      mentalCheck,
-      wakeTime,
-      sleepTime,
-      sleepNotes,
-    } = get()
-    try {
-      let updatedId = trackingId
-      const payload = { exercise_check: !exerciseCheck }
-
-      if (trackingId) {
-        await axios.put("/api/daily-trackings", { id: trackingId, ...payload })
-      } else {
-        const response = await axios.post("/api/daily-trackings", {
-          diet_check: dietCheck,
-          ...payload,
-          no_sugar: sugarCheck,
-          mental_strength_check: mentalCheck,
-          wake_time: wakeTime,
-          sleep_time: sleepTime,
-          sleep_notes: sleepNotes,
-        })
-        updatedId = response.data._id
-      }
-
-      set({ exerciseCheck: !exerciseCheck, trackingId: updatedId })
-    } catch (error) {
-      console.error("Error updating exercise tracking:", error)
-    }
+    await toggleTracking("exerciseCheck", "exercise_check")
   },
 
   toggleSugar: async () => {
-    const {
-      sugarCheck,
-      trackingId,
-      dietCheck,
-      exerciseCheck,
-      mentalCheck,
-      wakeTime,
-      sleepTime,
-      sleepNotes,
-    } = get()
-    try {
-      let updatedId = trackingId
-      const payload = { no_sugar: !sugarCheck }
-
-      if (trackingId) {
-        await axios.put("/api/daily-trackings", { id: trackingId, ...payload })
-      } else {
-        const response = await axios.post("/api/daily-trackings", {
-          diet_check: dietCheck,
-          exercise_check: exerciseCheck,
-          ...payload,
-          mental_strength_check: mentalCheck,
-          wake_time: wakeTime,
-          sleep_time: sleepTime,
-          sleep_notes: sleepNotes,
-        })
-        updatedId = response.data._id
-      }
-
-      set({ sugarCheck: !sugarCheck, trackingId: updatedId })
-    } catch (error) {
-      console.error("Error updating sugar tracking:", error)
-    }
+    await toggleTracking("sugarCheck", "no_sugar")
   },
 
   toggleMental: async () => {
-    const {
-      mentalCheck,
-      trackingId,
-      dietCheck,
-      exerciseCheck,
-      sugarCheck,
-      wakeTime,
-      sleepTime,
-      sleepNotes,
-    } = get()
-    try {
-      let updatedId = trackingId
-      const payload = { mental_strength_check: !mentalCheck }
-
-      if (trackingId) {
-        await axios.put("/api/daily-trackings", { id: trackingId, ...payload })
-      } else {
-        const response = await axios.post("/api/daily-trackings", {
-          diet_check: dietCheck,
-          exercise_check: exerciseCheck,
-          no_sugar: sugarCheck,
-          ...payload,
-          wake_time: wakeTime,
-          sleep_time: sleepTime,
-          sleep_notes: sleepNotes,
-        })
-        updatedId = response.data._id
-      }
-
-      set({ mentalCheck: !mentalCheck, trackingId: updatedId })
-    } catch (error) {
-      console.error("Error updating mental tracking:", error)
-    }
+    await toggleTracking("mentalCheck", "mental_strength_check")
   },
 
   updateSleepData: async (wakeTime, sleepTime, sleepNotes) => {
@@ -224,8 +95,79 @@ export const useDailyTrackingStore = create<DailyTrackingStore>((set, get) => ({
       }
 
       set({ wakeTime, sleepTime, sleepNotes, trackingId: updatedId })
+      checkCompletion()
     } catch (error) {
       console.error("Error updating sleep data:", error)
     }
   },
 }))
+
+// Helper function to toggle tracking fields
+const toggleTracking = async (
+  stateKey: keyof DailyTrackingStore,
+  apiField: string
+) => {
+  const store = useDailyTrackingStore.getState()
+  const currentValue = store[stateKey]
+  const {
+    trackingId,
+    dietCheck,
+    exerciseCheck,
+    sugarCheck,
+    mentalCheck,
+    wakeTime,
+    sleepTime,
+    sleepNotes,
+  } = store
+
+  try {
+    let updatedId = trackingId
+    const payload = { [apiField]: !currentValue }
+
+    if (trackingId) {
+      await axios.put("/api/daily-trackings", { id: trackingId, ...payload })
+    } else {
+      const response = await axios.post("/api/daily-trackings", {
+        diet_check: dietCheck,
+        exercise_check: exerciseCheck,
+        no_sugar: sugarCheck,
+        mental_strength_check: mentalCheck,
+        wake_time: wakeTime,
+        sleep_time: sleepTime,
+        sleep_notes: sleepNotes,
+        ...payload,
+      })
+      updatedId = response.data._id
+    }
+
+    useDailyTrackingStore.setState({
+      [stateKey]: !currentValue,
+      trackingId: updatedId,
+    })
+    checkCompletion()
+  } catch (error) {
+    console.error(`Error updating ${stateKey}:`, error)
+  }
+}
+
+// Function to check if all tracking values are completed
+const checkCompletion = () => {
+  const {
+    dietCheck,
+    exerciseCheck,
+    sugarCheck,
+    mentalCheck,
+    wakeTime,
+    sleepTime,
+  } = useDailyTrackingStore.getState()
+  if (
+    dietCheck &&
+    exerciseCheck &&
+    sugarCheck &&
+    mentalCheck &&
+    wakeTime &&
+    sleepTime
+  ) {
+    toast.success("Great job! You've completed your daily tracking.")
+  }
+}

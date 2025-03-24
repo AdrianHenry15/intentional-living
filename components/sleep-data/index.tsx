@@ -13,15 +13,15 @@ const SleepData = () => {
   const [localSleepTime, setLocalSleepTime] = useState(sleepTime || "")
   const [localSleepNotes, setLocalSleepNotes] = useState(sleepNotes || "")
 
-  useEffect(() => {
-    fetchTracking()
-  }, [fetchTracking])
+  // useEffect(() => {
+  //   fetchTracking()
+  // }, [fetchTracking])
 
-  useEffect(() => {
-    setLocalWakeTime(wakeTime || "")
-    setLocalSleepTime(sleepTime || "")
-    setLocalSleepNotes(sleepNotes || "")
-  }, [wakeTime, sleepTime, sleepNotes])
+  // useEffect(() => {
+  //   setLocalWakeTime(wakeTime || "")
+  //   setLocalSleepTime(sleepTime || "")
+  //   setLocalSleepNotes(sleepNotes || "")
+  // }, [wakeTime, sleepTime, sleepNotes])
 
   const handleUpdate = async () => {
     await updateSleepData(localWakeTime, localSleepTime, localSleepNotes)

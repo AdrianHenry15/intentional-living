@@ -23,10 +23,10 @@ export default function RootLayout({
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!isSignedIn || !user) {
-      setLoading(false)
-      return
-    }
+    // if (!isSignedIn || !user) {
+    //   setLoading(false)
+    //   return
+    // }
 
     // Function to reset daily ratings completion at the start of each day
     const resetAtMidnight = () => {
@@ -66,7 +66,7 @@ export default function RootLayout({
   const shouldShowCalendar =
     isSignedIn && !hiddenRoutes.some((route) => pathname.startsWith(route))
 
-  if (loading) return <p>Loading...</p> // Prevent rendering until check completes
+  // if (loading) return <p>Loading...</p> // Prevent rendering until check completes
 
   return (
     <main className="sticky top-0 z-50 bg-gray-900 shadow-lg h-screen w-full flex flex-col">
